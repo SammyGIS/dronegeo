@@ -10,20 +10,20 @@ theme:
   logo: images/dronegeo.png
   favicon: images/dronegeo.png
   palette:
-    # 1. Dark mode (DEFAULT)
-    - scheme: slate
-      primary: indigo
-      accent: deep purple
-      toggle:
-        icon: material/brightness-4
-        name: Switch to light mode
-    # 2. Light mode
+    # 1. Light mode (DEFAULT)
     - scheme: default
       primary: indigo
       accent: deep purple
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
+    # 2. Dark mode
+    - scheme: slate
+      primary: indigo
+      accent: deep purple
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
   features:
     - navigation.instant
     - navigation.tracking
