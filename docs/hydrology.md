@@ -4,7 +4,31 @@ Simulate watershed drainage paths, stream channel formation, soil moisture satur
 
 ---
 
-## The Hydrological Risk Indices Explained
+## 1. What It Does
+
+Rainfall runoff dictates environmental risk across construction sites, agricultural fields, and transport corridors. The `dronegeo.hydrology` module models:
+- **Drainage Swales & Streams**: Pinpointing where water concentrates and flows during storm events.
+- **Flood Pooling & Soil Saturation (TWI)**: Identifying low-lying valley depressions prone to flash flooding and waterlogging.
+- **Gully Channel Scouring (SPI)**: Pinpointing locations where high flow velocity causes destructive soil erosion.
+- **Hillslope Sediment Transport (STI)**: Quantifying soil loss for erosion control and silt fencing planning.
+- **Landslide Susceptibility Hazard**: Classifying slopes at risk of structural geotechnical failure.
+
+---
+
+## 2. How It Works
+
+```mermaid
+graph TD
+    A["Bare-Earth DTM"] --> B["D8 & D-Infinity Flow Directions"]
+    B --> C["Flow Accumulation (Catchment Area a)"]
+    A --> D["Slope Gradient (β) & Curvature"]
+    C & D --> E["Topographic Wetness Index (TWI)"]
+    C & D --> F["Stream Power Index (SPI)"]
+    C & D --> G["Sediment Transport (STI)"]
+    E & D --> H["Landslide Hazard Score [0-100]"]
+```
+
+### Scientific Indices & Formulas
 
 | Index | Formula | What It Means in Plain English | Primary Application |
 | :--- | :--- | :--- | :--- |
@@ -18,22 +42,68 @@ Simulate watershed drainage paths, stream channel formation, soil moisture satur
 
 ---
 
-## Python Code Examples
+## 3. The Code
 
 ```python
 import dronegeo as dg
 
-# 1. Flow Directions (D8 and D-Infinity)
-dg.hydrology.compute_d8_flow_direction("dtm.tif", "flow_direction_d8.tif")
-dg.hydrology.compute_dinfinity_flow_direction("dtm.tif", "flow_direction_dinf.tif")
+# ---------------------------------------------------------
+# Step 1: Flow Directions (D8 & D-Infinity)
+# ---------------------------------------------------------
+# D8 Deterministic flow direction
+d8_tif = dg.hydrology.compute_d8_flow_direction(
+    dem_path="bare_earth_dtm.tif",
+    output_tif="flow_direction_d8.tif"
+)
 
-# 2. Flow Accumulation & Stream Network
-accum = dg.hydrology.compute_flow_accumulation("dtm.tif", "accum.tif")
-streams = dg.hydrology.extract_stream_network(accum, "streams.tif", threshold_cells=200)
+# D-Infinity continuous flow routing
+dinf_tif = dg.hydrology.compute_dinfinity_flow_direction(
+    dem_path="bare_earth_dtm.tif",
+    output_tif="flow_direction_dinf.tif"
+)
 
-# 3. Environmental Risk Indices (TWI, SPI, STI, Landslide)
-twi = dg.hydrology.compute_topographic_wetness_index("dtm.tif", "twi.tif")
-spi = dg.hydrology.compute_stream_power_index("dtm.tif", "spi.tif")
-sti = dg.hydrology.compute_sediment_transport_index("dtm.tif", "sti.tif")
-hazard = dg.hydrology.compute_landslide_susceptibility_index("dtm.tif", "landslide_hazard.tif")
+# ---------------------------------------------------------
+# Step 2: Flow Accumulation & Stream Channels
+# ---------------------------------------------------------
+accum_tif = dg.hydrology.compute_flow_accumulation(
+    dem_path="bare_earth_dtm.tif",
+    output_tif="flow_accumulation.tif",
+    units="cells"
+)
+
+# Extract stream channels exceeding 200 upstream contributing cells
+streams_tif = dg.hydrology.extract_stream_network(
+    accum_path=accum_tif,
+    output_tif="stream_channels.tif",
+    threshold_cells=200
+)
+
+# ---------------------------------------------------------
+# Step 3: Environmental & Engineering Risk Indices
+# ---------------------------------------------------------
+# Topographic Wetness Index (TWI - Flood Pooling)
+twi_tif = dg.hydrology.compute_topographic_wetness_index(
+    dem_path="bare_earth_dtm.tif",
+    output_tif="twi_flood_risk.tif"
+)
+
+# Stream Power Index (SPI - Gully Scouring)
+spi_tif = dg.hydrology.compute_stream_power_index(
+    dem_path="bare_earth_dtm.tif",
+    output_tif="spi_scouring.tif"
+)
+
+# Sediment Transport Index (STI - USLE LS Factor)
+sti_tif = dg.hydrology.compute_sediment_transport_index(
+    dem_path="bare_earth_dtm.tif",
+    output_tif="sti_sediment.tif"
+)
+
+# Multi-Criteria Landslide Hazard Susceptibility Score [0 - 100]
+landslide_tif = dg.hydrology.compute_landslide_susceptibility_index(
+    dem_path="bare_earth_dtm.tif",
+    output_tif="landslide_hazard_score.tif"
+)
+
+print("Hydrological modeling suite executed successfully!")
 ```
