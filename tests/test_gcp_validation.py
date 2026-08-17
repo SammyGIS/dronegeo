@@ -45,7 +45,7 @@ def sample_las_and_gcps(tmp_path):
     las.x = xs
     las.y = ys
     las.z = zs
-    las.classification = np.full(n_pts, 2, dtype=np.uint8)  # Ground class
+    las.raw_classification = np.full(n_pts, 2, dtype=np.uint8)  # Ground class
     las.write(str(las_path))
 
     # 2. Create 5 GCPs: 4 accurate, 1 outlier blunder
