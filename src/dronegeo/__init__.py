@@ -32,6 +32,12 @@ try:
 except Exception:
     pass
 
+try:
+    import matplotlib
+    matplotlib.use("Agg")
+except Exception:
+    pass
+
 __version__ = "0.1.0"
 __author__ = "STROM Drone Remote Sensing Team"
 

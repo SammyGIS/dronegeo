@@ -6,6 +6,14 @@ Generates realistic UAV LiDAR point clouds and GeoTIFF surface models without ex
 """
 
 import os
+import sys
+import tempfile
+from pathlib import Path
+import pytest
+import numpy as np
+
+import matplotlib
+matplotlib.use("Agg")
 
 # Ensure clean PROJ bindings before rasterio initialization
 try:
@@ -17,10 +25,6 @@ try:
 except Exception:
     pass
 
-import tempfile
-from pathlib import Path
-import numpy as np
-import pytest
 import laspy
 import rasterio
 from rasterio.transform import from_origin
