@@ -85,3 +85,8 @@ class RasterIOError(DroneGeoError):
 class ComputationError(DroneGeoError):
     """Raised when a numerical calculation (e.g. least-squares trend surface) fails to converge."""
     pass
+
+
+class DatasetValidationError(DroneGeoError):
+    """Raised when an input dataset or control file fails structural format validation."""
+    pass

@@ -25,6 +25,7 @@ from ..lidar.point_metrics import profile_point_cloud
 from ..utils.file_utils import verify_las_file, verify_raster_file, ensure_output_directory
 from .utils.report_formatters import format_markdown_report, format_terminal_summary
 from .utils.anomaly_filters import filter_elevation_outliers, smooth_terrain_spikes, infill_nodata_holes
+from .gcp_validation import validate_gcp_accuracy, GCPValidationReport
 
 logger = logging.getLogger(__name__)
 
@@ -123,6 +124,8 @@ class AutoQCReport:
 def inspect_point_cloud(
     las_path: Union[str, Path],
     expected_crs: Optional[Union[str, int]] = None,
+    gcp_data: Optional[Union[str, Path, Any]] = None,
+    target_tolerance_m: float = 0.05,
 ) -> AutoQCReport:
     """
     Performs comprehensive AutoQC diagnostic inspection on raw LAS/LAZ point clouds.
@@ -250,6 +253,67 @@ def inspect_point_cloud(
             },
         ))
 
+    # 4. Ground Control Point (GCP) & Checkpoint Accuracy Validation
+    gcp_report_dict = None
+    if gcp_data is not None:
+        try:
+            gcp_rep = validate_gcp_accuracy(
+                dataset_path=str(las_file),
+                gcp_data=gcp_data,
+                target_tolerance_m=target_tolerance_m,
+                ground_only=True
+            )
+            gcp_report_dict = gcp_rep.to_dict()
+
+            if not gcp_rep.passed_tolerance:
+                if abs(gcp_rep.mean_bias_z) > target_tolerance_m:
+                    quality_score -= 25
+                    issues.append(DiagnosticIssue(
+                        code="GCP_VERTICAL_DATUM_SHIFT",
+                        title="Systematic Vertical Datum Bias (GCP Discrepancy)",
+                        severity=IssueSeverity.CRITICAL if abs(gcp_rep.mean_bias_z) > 0.15 else IssueSeverity.WARNING,
+                        description=(
+                            f"Systematic vertical datum offset of {gcp_rep.mean_bias_z * 100:+.2f} cm "
+                            f"(RMSEz: {gcp_rep.rmse_z * 100:.2f} cm) detected across {gcp_rep.total_points} ground control targets."
+                        ),
+                        root_cause="Ellipsoid vs Orthometric geoid undulation mismatch, base station coordinate entry error, or RTK antenna phase center height offset.",
+                        impact="Elevations across all derived DTMs and cut/fill volumes will be systematically shifted by this offset.",
+                        suggested_parameters={
+                            "z_shift": gcp_rep.recommended_z_shift,
+                            "auto_shift_z": True,
+                        },
+                    ))
+                else:
+                    quality_score -= 15
+                    issues.append(DiagnosticIssue(
+                        code="GCP_ACCURACY_EXCEEDS_TOLERANCE",
+                        title="Vertical RMSE Exceeds Survey Accuracy Specification",
+                        severity=IssueSeverity.WARNING,
+                        description=f"Point cloud vertical RMSEz is {gcp_rep.rmse_z * 100:.2f} cm (exceeds target spec of {target_tolerance_m * 100:.1f} cm).",
+                        root_cause="High flight altitude, sensor IMU drift, insufficient ground return density, or vegetative occlusion over GCP targets.",
+                        impact="Survey deliverable may fail municipal or engineering QA/QC compliance thresholds.",
+                        suggested_parameters={
+                            "target_tolerance_m": target_tolerance_m,
+                        },
+                    ))
+
+            if gcp_rep.suspect_outliers:
+                quality_score -= 10
+                out_ids = ", ".join(f"'{o.point_id}' ({o.delta_z * 100:+.1f}cm)" for o in gcp_rep.suspect_outliers)
+                issues.append(DiagnosticIssue(
+                    code="GCP_OUTLIER_BLUNDER",
+                    title="Suspect Outlier Control Point(s) Detected",
+                    severity=IssueSeverity.WARNING,
+                    description=f"Detected {len(gcp_rep.suspect_outliers)} suspect GCP marker(s) with severe residual deviations: {out_ids}.",
+                    root_cause="Typo in surveyor field book notes, incorrect rod/prism height entry, target displacement, or obscured target.",
+                    impact="Including these blunder points in georeferencing will distort the local point cloud geometry.",
+                    suggested_parameters={
+                        "suspect_gcp_ids": [o.point_id for o in gcp_rep.suspect_outliers],
+                    },
+                ))
+        except Exception as e:
+            logger.warning(f"Failed to validate point cloud against GCPs: {e}")
+
     quality_score = max(0, min(100, quality_score))
     overall_status = (
         IssueSeverity.CRITICAL if any(i.severity == IssueSeverity.CRITICAL for i in issues)
@@ -268,6 +332,7 @@ def inspect_point_cloud(
         "z_std_m": z_std,
         "noise_points_count": noise_count,
         "has_valid_crs": has_crs,
+        "gcp_accuracy": gcp_report_dict,
     }
 
     return AutoQCReport(
@@ -282,6 +347,8 @@ def inspect_point_cloud(
 
 def inspect_elevation_model(
     dem_path: Union[str, Path],
+    gcp_data: Optional[Union[str, Path, Any]] = None,
+    target_tolerance_m: float = 0.05,
 ) -> AutoQCReport:
     """
     Performs comprehensive AutoQC diagnostic inspection on DTM/DSM GeoTIFF elevation models.
@@ -402,6 +469,62 @@ def inspect_elevation_model(
             },
         ))
 
+    # 4. Ground Control Point (GCP) & Checkpoint Accuracy Validation
+    gcp_report_dict = None
+    if gcp_data is not None:
+        try:
+            gcp_rep = validate_gcp_accuracy(
+                dataset_path=str(dem_file),
+                gcp_data=gcp_data,
+                target_tolerance_m=target_tolerance_m,
+            )
+            gcp_report_dict = gcp_rep.to_dict()
+
+            if not gcp_rep.passed_tolerance:
+                if abs(gcp_rep.mean_bias_z) > target_tolerance_m:
+                    quality_score -= 25
+                    issues.append(DiagnosticIssue(
+                        code="GCP_VERTICAL_DATUM_SHIFT",
+                        title="Systematic Vertical Datum Bias in Elevation Model",
+                        severity=IssueSeverity.CRITICAL if abs(gcp_rep.mean_bias_z) > 0.15 else IssueSeverity.WARNING,
+                        description=f"Elevation model has a systematic vertical bias of {gcp_rep.mean_bias_z * 100:+.2f} cm (RMSEz: {gcp_rep.rmse_z * 100:.2f} cm) against GCPs.",
+                        root_cause="Geoid undulation offset or uncalibrated vertical datum in input point cloud.",
+                        impact="Elevations and earthwork volumes derived from this DEM will be systematically offset.",
+                        suggested_parameters={
+                            "z_shift": gcp_rep.recommended_z_shift,
+                        },
+                    ))
+                else:
+                    quality_score -= 15
+                    issues.append(DiagnosticIssue(
+                        code="GCP_ACCURACY_EXCEEDS_TOLERANCE",
+                        title="DEM Vertical RMSE Exceeds Accuracy Specification",
+                        severity=IssueSeverity.WARNING,
+                        description=f"DEM vertical RMSEz is {gcp_rep.rmse_z * 100:.2f} cm (exceeds target spec of {target_tolerance_m * 100:.1f} cm).",
+                        root_cause="Interpolation smoothing over steep terrain or local sensor height distortion.",
+                        impact="May not meet contractual engineering tolerance specifications.",
+                        suggested_parameters={
+                            "target_tolerance_m": target_tolerance_m,
+                        },
+                    ))
+
+            if gcp_rep.suspect_outliers:
+                quality_score -= 10
+                out_ids = ", ".join(f"'{o.point_id}' ({o.delta_z * 100:+.1f}cm)" for o in gcp_rep.suspect_outliers)
+                issues.append(DiagnosticIssue(
+                    code="GCP_OUTLIER_BLUNDER",
+                    title="Suspect Outlier Control Point(s) in DEM",
+                    severity=IssueSeverity.WARNING,
+                    description=f"Detected {len(gcp_rep.suspect_outliers)} suspect control target(s) with anomalous DEM residuals: {out_ids}.",
+                    root_cause="Surveyor target height error or physical movement of control target.",
+                    impact="Distorts local accuracy verification statistics.",
+                    suggested_parameters={
+                        "suspect_gcp_ids": [o.point_id for o in gcp_rep.suspect_outliers],
+                    },
+                ))
+        except Exception as e:
+            logger.warning(f"Failed to validate DEM against GCPs: {e}")
+
     quality_score = max(0, min(100, quality_score))
     overall_status = (
         IssueSeverity.CRITICAL if any(i.severity == IssueSeverity.CRITICAL for i in issues)
@@ -422,19 +545,20 @@ def inspect_elevation_model(
         "z_std_m": z_std,
         "elevation_spikes_count": spike_count,
         "has_valid_crs": has_crs,
+        "gcp_accuracy": gcp_report_dict,
     }
 
     return AutoQCReport(
         dataset_path=str(dem_file),
         dataset_type="elevation_model",
-        quality_score=quality_score,
+    quality_score=quality_score,
         overall_status=overall_status,
         summary_metrics=metrics,
         issues=issues,
     )
 
 
-def remediate_point_cloud(
+def correct_point_cloud(
     las_path: Union[str, Path],
     output_las: Union[str, Path],
     report: Optional[AutoQCReport] = None,
@@ -442,13 +566,15 @@ def remediate_point_cloud(
     clean_outliers: bool = True,
     z_min_cutoff: Optional[float] = None,
     z_max_cutoff: Optional[float] = None,
+    z_shift: Optional[float] = None,
 ) -> str:
     """
-    Automatically repairs and cleans a defective LAS point cloud based on AutoQC findings.
+    Automatically repairs, corrects, and cleans a defective LAS point cloud based on AutoQC findings.
 
-    Remediations Applied:
+    Corrections Applied:
     - Filters out extreme elevation outliers (multipath noise and floaters).
     - Embeds valid EPSG CRS headers into unreferenced point clouds.
+    - Applies calibrated vertical datum shifts (z_shift) derived from GCP accuracy validation.
     - Preserves all valid point dimensions, RGB colors, and intensity.
 
     Parameters
@@ -467,6 +593,8 @@ def remediate_point_cloud(
         Minimum valid elevation cutoff.
     z_max_cutoff : float, optional
         Maximum valid elevation cutoff.
+    z_shift : float, optional
+        Vertical elevation adjustment in meters (e.g. from GCP validation).
 
     Returns
     -------
@@ -486,6 +614,7 @@ def remediate_point_cloud(
     effective_crs = assign_crs or suggested.get("assign_crs", 32632)
     effective_z_min = z_min_cutoff if z_min_cutoff is not None else suggested.get("z_min_cutoff")
     effective_z_max = z_max_cutoff if z_max_cutoff is not None else suggested.get("z_max_cutoff")
+    effective_z_shift = z_shift if z_shift is not None else suggested.get("z_shift", 0.0)
 
     with laspy.open(str(las_file)) as f:
         header = f.header
@@ -494,21 +623,48 @@ def remediate_point_cloud(
     z_vals = np.array(las_data.z, dtype=np.float64)
 
     if clean_outliers:
-        keep_mask = filter_elevation_outliers(z_vals, effective_z_min, effective_z_max)
+        if effective_z_min is not None and effective_z_max is not None:
+            valid_mask = (z_vals >= effective_z_min) & (z_vals <= effective_z_max)
+        else:
+            p1, p99 = np.percentile(z_vals, [1, 99])
+            iqr = p99 - p1
+            valid_mask = (z_vals >= (p1 - 2.5 * iqr)) & (z_vals <= (p99 + 2.5 * iqr))
     else:
-        keep_mask = np.ones(len(z_vals), dtype=bool)
+        valid_mask = np.ones(len(z_vals), dtype=bool)
 
-    filtered_las = las_data[keep_mask]
+    # Filter points
+    cleaned_points = las_data[valid_mask]
 
-    if header.parse_crs() is None or effective_crs is not None:
-        try:
-            filtered_las.header.add_crs(pyproj.CRS.from_epsg(effective_crs))
-        except Exception:
-            pass
+    # Create new clean LasData
+    new_header = laspy.LasHeader(
+        point_format=header.point_format.id,
+        version=header.version,
+    )
+    new_header.offsets = header.offsets
+    new_header.scales = header.scales
 
-    filtered_las.write(str(out_file))
-    logger.info(f"AutoQC remediated LAS written: {out_file} ({len(filtered_las):,} points retained)")
-    return str(out_file)
+    # Assign CRS
+    try:
+        proj_crs = pyproj.CRS.from_epsg(int(effective_crs))
+        new_header.add_crs(proj_crs)
+    except Exception as e:
+        logger.warning(f"Could not assign CRS {effective_crs} to LAS header: {e}")
+
+    new_las = laspy.LasData(new_header)
+    new_las.points = cleaned_points.points.copy()
+
+    if abs(effective_z_shift) > 1e-4:
+        shift_int = int(round(effective_z_shift / header.scales[2]))
+        new_las.Z = new_las.Z + shift_int
+
+    new_las.write(str(out_file))
+    logger.info(f"AutoQC corrected LAS written: {out_file} ({len(cleaned_points):,} points retained)")
+    return str(out_file.resolve())
+
+
+# Backwards compatibility and alternative spellings aliases
+remediate_point_cloud = correct_point_cloud
+correct_point_clouud = correct_point_cloud
 
 
 def remediate_elevation_model(
@@ -596,12 +752,19 @@ def inspect(dataset_path: Union[str, Path], **kwargs: Any) -> AutoQCReport:
         raise DroneGeoError(f"Unsupported dataset format: {dataset_path}. Expected LAS/LAZ or GeoTIFF.")
 
 
+# Backwards compatibility alias
+correct_elevation_model = remediate_elevation_model
+
+
 def remediate(input_path: Union[str, Path], output_path: Union[str, Path], **kwargs: Any) -> str:
-    """Convenience AutoQC dispatcher that auto-remediates either a LAS/LAZ point cloud or DEM GeoTIFF."""
+    """Convenience AutoQC dispatcher that auto-remediates/corrects either a LAS/LAZ point cloud or DEM GeoTIFF."""
     path_str = str(input_path).lower()
     if path_str.endswith(".las") or path_str.endswith(".laz"):
-        return remediate_point_cloud(input_path, output_path, **kwargs)
+        return correct_point_cloud(input_path, output_path, **kwargs)
     elif path_str.endswith(".tif") or path_str.endswith(".tiff"):
         return remediate_elevation_model(input_path, output_path, **kwargs)
     else:
         raise DroneGeoError(f"Unsupported dataset format: {input_path}. Expected LAS/LAZ or GeoTIFF.")
+
+
+correct = remediate

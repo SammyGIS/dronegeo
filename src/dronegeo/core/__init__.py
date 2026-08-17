@@ -25,6 +25,7 @@ from .exceptions import (
     IncompatibleRasterDimensionsError,
     RasterIOError,
     ComputationError,
+    DatasetValidationError,
 )
 
 __all__ = [
@@ -46,4 +47,5 @@ __all__ = [
     "IncompatibleRasterDimensionsError",
     "RasterIOError",
     "ComputationError",
+    "DatasetValidationError",
 ]

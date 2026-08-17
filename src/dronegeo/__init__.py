@@ -84,6 +84,13 @@ from .core.exceptions import (
     ComputationError,
 )
 
+from .diagnostics.gcp_validation import (
+    validate_gcp_accuracy,
+    GCPValidationReport,
+    GCPResidualPoint,
+    load_gcp_dataset,
+)
+
 __all__ = [
     "__version__",
     "__author__",
@@ -97,8 +104,14 @@ __all__ = [
     "analysis",
     "hydrology",
     "risk",
+    "autoqc",
+    "qc",
     "profiling",
     "utils",
+    "validate_gcp_accuracy",
+    "GCPValidationReport",
+    "GCPResidualPoint",
+    "load_gcp_dataset",
     "ComputeConfig",
     "set_compute_config",
     "get_compute_config",

@@ -85,7 +85,7 @@ def format_terminal_summary(
 ) -> None:
     """Prints a structured summary to the terminal."""
     print("=" * 75)
-    print(f"🔍 DroneGeo AutoQC: {Path(dataset_path).name}")
+    print(f"  [AutoQC] Diagnostic Report: {Path(dataset_path).name}")
     print("=" * 75)
     print(f"AutoQC Quality Score : {quality_score}/100 [{overall_status}]")
     print(f"Dataset Type         : {dataset_type}")

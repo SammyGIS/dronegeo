@@ -21,10 +21,22 @@ from .autoqc import (
     AutoQCReport,
     inspect_point_cloud,
     inspect_elevation_model,
+    correct_point_cloud,
+    correct_point_clouud,
     remediate_point_cloud,
+    correct_elevation_model,
     remediate_elevation_model,
     inspect,
+    correct,
     remediate,
+)
+from .gcp_validation import (
+    PointType,
+    ResidualStatus,
+    GCPResidualPoint,
+    GCPValidationReport,
+    load_gcp_dataset,
+    validate_gcp_accuracy,
 )
 from . import utils
 
@@ -40,9 +52,19 @@ __all__ = [
     "AutoQCReport",
     "inspect_point_cloud",
     "inspect_elevation_model",
+    "correct_point_cloud",
+    "correct_point_clouud",
     "remediate_point_cloud",
+    "correct_elevation_model",
     "remediate_elevation_model",
     "inspect",
+    "correct",
     "remediate",
+    "PointType",
+    "ResidualStatus",
+    "GCPResidualPoint",
+    "GCPValidationReport",
+    "load_gcp_dataset",
+    "validate_gcp_accuracy",
     "utils",
 ]

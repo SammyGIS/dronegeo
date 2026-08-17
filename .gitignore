@@ -123,6 +123,14 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+# Output directories
+output/
+outputs/
+output_*/
+site/
+.cache/
+.pytest_cache/
+
 # IDE / Editors
 .vscode/
 .idea/

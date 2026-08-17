@@ -16,9 +16,12 @@ import pyproj
 from dronegeo.diagnostics.autoqc import (
     inspect_point_cloud,
     inspect_elevation_model,
+    correct_point_cloud,
+    correct_point_clouud,
     remediate_point_cloud,
     remediate_elevation_model,
     inspect,
+    correct,
     remediate,
     IssueSeverity,
 )
@@ -94,10 +97,14 @@ def test_inspect_and_remediate_point_cloud(noisy_synthetic_las, tmp_path):
     js = report.to_json()
     assert "quality_score" in js
 
-    # 2. Remediate
+    # 2. Correct / Remediate
     clean_las = tmp_path / "repaired_survey.las"
-    remediate_point_cloud(noisy_synthetic_las, str(clean_las), report=report, assign_crs=32632)
+    correct_point_cloud(noisy_synthetic_las, str(clean_las), report=report, assign_crs=32632)
     assert clean_las.exists()
+
+    # Verify alias parity
+    assert correct_point_clouud is correct_point_cloud
+    assert remediate_point_cloud is correct_point_cloud
 
     # 3. Re-inspect repaired LAS
     recheck = inspect_point_cloud(str(clean_las), expected_crs=32632)
@@ -139,9 +146,10 @@ def test_generic_dispatcher(noisy_synthetic_las, defective_dem_geotiff, tmp_path
     assert rep_dem.dataset_type == "elevation_model"
 
     out_las = tmp_path / "auto_disp_las.las"
-    remediate(noisy_synthetic_las, str(out_las))
+    correct(noisy_synthetic_las, str(out_las))
     assert out_las.exists()
 
     out_dem = tmp_path / "auto_disp_dem.tif"
     remediate(defective_dem_geotiff, str(out_dem))
     assert out_dem.exists()
+    assert correct is remediate
