@@ -11,21 +11,40 @@
 <p align="center">
   <a href="https://pypi.org/project/dronegeo/"><img src="https://img.shields.io/pypi/v/dronegeo?style=for-the-badge&logo=pypi&color=007ec6" alt="PyPI Version" /></a>
   <a href="https://python.org"><img src="https://img.shields.io/pypi/pyversions/dronegeo?style=for-the-badge&logo=python&color=3776AB" alt="Python Version" /></a>
+  <a href="https://sammygis.github.io/dronegeo/"><img src="https://img.shields.io/badge/Live%20Docs-GitHub%20Pages-teal?style=for-the-badge&logo=materialformkdocs" alt="GitHub Pages" /></a>
   <a href="https://dronegeo.readthedocs.io"><img src="https://img.shields.io/badge/Docs-ReadTheDocs-blueviolet?style=for-the-badge&logo=readthedocs" alt="ReadTheDocs" /></a>
-  <a href="https://sammygis.github.io/dronegeo/"><img src="https://img.shields.io/badge/Docs-GitHub%20Pages-teal?style=for-the-badge&logo=materialformkdocs" alt="GitHub Pages" /></a>
   <a href="https://github.com/SammyGIS/dronegeo/actions"><img src="https://img.shields.io/badge/Tests-49%20Passed%20(100%25)-brightgreen?style=for-the-badge&logo=pytest" alt="Tests" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" alt="License" /></a>
   <a href="#"><img src="https://img.shields.io/badge/Engine-Multi--Threaded%20k--NN-orange?style=for-the-badge" alt="Engine" /></a>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/AutoQC-Diagnostic%20%26%20Healing-00c853?style=flat-square" alt="AutoQC" />
-  <img src="https://img.shields.io/badge/DTM%20%26%20DSM-Survey%20Grade%200.10m-2979ff?style=flat-square" alt="DTM" />
-  <img src="https://img.shields.io/badge/Hydrology-D8%20%7C%20D--Infinity%20%7C%20TWI-00b0ff?style=flat-square" alt="Hydrology" />
-  <img src="https://img.shields.io/badge/Orthomosaic-4--Band%20RGBA-aa00ff?style=flat-square" alt="Orthomosaic" />
-  <img src="https://img.shields.io/badge/Crop%20Health-VARI%20%7C%20GLI%20%7C%20TGI-00e676?style=flat-square" alt="Crop Health" />
-  <img src="https://img.shields.io/badge/Volumetrics-3D%20Cut%20%26%20Fill-ff9100?style=flat-square" alt="Volumetrics" />
+  <a href="https://sammygis.github.io/dronegeo/autoqc/"><img src="https://img.shields.io/badge/AutoQC-Diagnostic%20%26%20Healing-00c853?style=flat-square" alt="AutoQC" /></a>
+  <a href="https://sammygis.github.io/dronegeo/surfaces/"><img src="https://img.shields.io/badge/DTM%20%26%20DSM-Survey%20Grade%200.10m-2979ff?style=flat-square" alt="DTM" /></a>
+  <a href="https://sammygis.github.io/dronegeo/hydrology/"><img src="https://img.shields.io/badge/Hydrology-D8%20%7C%20D--Infinity%20%7C%20TWI-00b0ff?style=flat-square" alt="Hydrology" /></a>
+  <a href="https://sammygis.github.io/dronegeo/imagery/"><img src="https://img.shields.io/badge/Orthomosaic-4--Band%20RGBA-aa00ff?style=flat-square" alt="Orthomosaic" /></a>
+  <a href="https://sammygis.github.io/dronegeo/imagery/"><img src="https://img.shields.io/badge/Crop%20Health-VARI%20%7C%20GLI%20%7C%20TGI-00e676?style=flat-square" alt="Crop Health" /></a>
+  <a href="https://sammygis.github.io/dronegeo/volumetrics/"><img src="https://img.shields.io/badge/Volumetrics-3D%20Cut%20%26%20Fill-ff9100?style=flat-square" alt="Volumetrics" /></a>
 </p>
+
+---
+
+## 🌐 Live Interactive Documentation
+
+Explore the complete interactive documentation, guides, and Swagger-style API specifications:
+
+👉 **[https://sammygis.github.io/dronegeo/](https://sammygis.github.io/dronegeo/)**
+
+| Guide & Topic | Direct Live Link | Description |
+| :--- | :--- | :--- |
+| 🚀 **Beginner Quickstart** | [sammygis.github.io/dronegeo/quickstart](https://sammygis.github.io/dronegeo/quickstart/) | 5-minute step-by-step tutorial from raw LAS to finished deliverables |
+| 🔍 **AutoQC & Diagnostics** | [sammygis.github.io/dronegeo/autoqc](https://sammygis.github.io/dronegeo/autoqc/) | Pre-flight audit, floater noise filtering & 1-line auto-healing |
+| ⛰️ **Surface Models (DEM)** | [sammygis.github.io/dronegeo/surfaces](https://sammygis.github.io/dronegeo/surfaces/) | Smooth $k$-NN IDW Bare-Earth DTMs, DSMs & Canopy Height Models |
+| 🌊 **Hydrology & Flood Risk** | [sammygis.github.io/dronegeo/hydrology](https://sammygis.github.io/dronegeo/hydrology/) | D8/D-Inf flow routing, TWI flood pooling & Landslide hazard scoring |
+| 🎨 **Orthos & Crop Vitality** | [sammygis.github.io/dronegeo/imagery](https://sammygis.github.io/dronegeo/imagery/) | 4-band RGBA orthomosaics & VARI / GLI / TGI agricultural indices |
+| 📐 **3D Volumetrics & Contours** | [sammygis.github.io/dronegeo/volumetrics](https://sammygis.github.io/dronegeo/volumetrics/) | Excavation Cut & Fill ($m^3$), stockpiles & CAD vector contours |
+| 💻 **Interactive Notebooks** | [sammygis.github.io/dronegeo/examples](https://sammygis.github.io/dronegeo/examples/) | Standalone Python scripts & Jupyter notebook walkthroughs |
+| 📚 **Full API Reference** | [sammygis.github.io/dronegeo/api](https://sammygis.github.io/dronegeo/api/) | Collapsible parameter dropdowns, types, returns & docstrings |
 
 ---
 
@@ -168,20 +187,20 @@ master_las = dg.lidar.align_and_merge_strips(
 ```python
 import dronegeo as dg
 
-# Continuous Ground DTM (0.118m)
+# Continuous Ground DTM (0.10m)
 dtm_path = dg.dem.create_dtm(
     las_path="outputs/unified_master.las",
     output_tif="outputs/survey_dtm.tif",
-    resolution=0.118,
+    resolution=0.10,
     k_neighbors=8,
     ground_class=2
 )
 
-# Continuous DSM (0.118m)
+# Continuous DSM (0.10m)
 dsm_path = dg.dem.create_dsm(
     las_path="outputs/unified_master.las",
     output_tif="outputs/survey_dsm.tif",
-    resolution=0.118
+    resolution=0.10
 )
 
 # Canopy Height Model (CHM = DSM - DTM)
@@ -309,10 +328,10 @@ with dg.compute_context(n_jobs=4, chunk_size=1_000_000, low_memory_mode=True):
 
 ## Documentation and Live Preview
 
-`dronegeo` documentation is hosted on ReadTheDocs and GitHub Pages:
+`dronegeo` documentation is hosted on GitHub Pages and ReadTheDocs:
 
+- **GitHub Pages (Official)**: [https://sammygis.github.io/dronegeo/](https://sammygis.github.io/dronegeo/)
 - **ReadTheDocs**: [https://dronegeo.readthedocs.io](https://dronegeo.readthedocs.io)
-- **GitHub Pages**: [https://sammygis.github.io/dronegeo/](https://sammygis.github.io/dronegeo/)
 
 To launch the documentation locally with instant hot-reloading:
 
