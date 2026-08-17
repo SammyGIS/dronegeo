@@ -1,23 +1,25 @@
-<div align="center">
+<p align="center">
+  <img src="https://raw.githubusercontent.com/SammyGIS/dronegeo/main/docs/images/dronegeo.png" width="240" alt="dronegeo logo" />
+</p>
 
-<img src="https://raw.githubusercontent.com/SammyGIS/dronegeo/main/docs/images/dronegeo.png" width="300" alt="dronegeo logo" />
+<h1 align="center">dronegeo</h1>
 
-# dronegeo
+<p align="center">
+  <b>High-Performance Python Remote Sensing, UAV LiDAR, Hydrological Flow & Photogrammetry Processing Toolkit</b>
+</p>
 
-**High-Performance Python Remote Sensing, UAV LiDAR, Hydrological Flow & Photogrammetry Processing Toolkit**
-
-[![PyPI Version](https://img.shields.io/pypi/v/dronegeo?style=for-the-badge&logo=pypi&color=007ec6)](https://pypi.org/project/dronegeo/)
-[![Python Version](https://img.shields.io/pypi/pyversions/dronegeo?style=for-the-badge&logo=python&color=3776AB)](https://python.org)
-[![Documentation](https://img.shields.io/badge/Docs-MkDocs%20Material-blueviolet?style=for-the-badge&logo=materialformkdocs)](https://sammygis.github.io/dronegeo/)
-[![Tests](https://img.shields.io/badge/Tests-49%20Passed%20(100%25)-success?style=for-the-badge&logo=pytest)](https://github.com/SammyGIS/dronegeo/actions)
-[![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
-[![Engine](https://img.shields.io/badge/Engine-Multi--Threaded%20k--NN-orange?style=for-the-badge)](#)
+<p align="center">
+  <a href="https://pypi.org/project/dronegeo/"><img src="https://img.shields.io/pypi/v/dronegeo?style=for-the-badge&logo=pypi&color=007ec6" alt="PyPI Version" /></a>
+  <a href="https://python.org"><img src="https://img.shields.io/pypi/pyversions/dronegeo?style=for-the-badge&logo=python&color=3776AB" alt="Python Version" /></a>
+  <a href="https://sammygis.github.io/dronegeo/"><img src="https://img.shields.io/badge/Docs-MkDocs%20Material-blueviolet?style=for-the-badge&logo=materialformkdocs" alt="Documentation" /></a>
+  <a href="https://github.com/SammyGIS/dronegeo/actions"><img src="https://img.shields.io/badge/Tests-49%20Passed%20(100%25)-success?style=for-the-badge&logo=pytest" alt="Tests" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" alt="License" /></a>
+  <a href="#"><img src="https://img.shields.io/badge/Engine-Multi--Threaded%20k--NN-orange?style=for-the-badge" alt="Engine" /></a>
+</p>
 
 <p align="center">
   <b>Inspect & AutoQC</b> • <b>Multi-Strip Alignment (ΔZ)</b> • <b>Continuous Smooth DTM/DSM</b> • <b>True-Color Orthos</b> • <b>Hydrology & Risk</b> • <b>3D Volumetrics</b> • <b>Crop Health Indices</b>
 </p>
-
-</div>
 
 ---
 
