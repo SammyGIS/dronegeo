@@ -27,33 +27,30 @@
 
 ---
 
-## ✨ Features at a Glance
+## ✨ What You Can Do (Features & Real-World Examples)
 
-| Category | Capability | Description |
+| Module | What It Does | Real-World Example |
 | :--- | :--- | :--- |
-| **🔍 Diagnostics & QC** | `check_strip_alignment` | Auto-detects median vertical datum offset ($\Delta Z$) across overlapping flight passes. |
-| | `detect_terrain_anomalies` | Identifies sensor spikes, sinkhole pits, and unnatural vertical cliff tears in DEMs. |
-| | `profile_point_cloud` | Audits raw LAS metadata, dimensions (RGB, Intensity), classifications, and pulse returns. |
-| **⛰️ Surface Models** | `create_dtm` | Generates continuous-gradient DTMs using multi-threaded $k$-NN IDW (zero crystal/facet steps). |
-| | `create_dsm` | Maximum surface return extraction with distance-transform void infilling and footprint clipping. |
-| | `create_chm` | Canopy Height Models ($\text{CHM} = \text{DSM} - \text{DTM}$) with customizable height clamps. |
-| **🌊 Hydrology & Risk** | `compute_d8_flow_direction` | Deterministic 8-neighbor steepest descent flow routing (*O'Callaghan & Mark 1984*). |
-| | `compute_dinfinity_flow_direction` | Continuous flow direction angle ($0 - 2\pi$ rad) (*Tarboton 1997*). |
-| | `compute_flow_accumulation` | Upslope contributing catchment area and stream channel extraction (*Jenson & Domingue 1988*). |
-| | `compute_topographic_wetness_index` | Topographic Wetness Index ($\text{TWI}$) / $\text{CTI}$ soil saturation model (*Beven & Kirkby 1979*). |
-| | `compute_stream_power_index` | Stream Power Index ($\text{SPI}$) channel scouring erosion potential (*Moore et al. 1991*). |
-| | `compute_sediment_transport_index` | Sediment Transport Index ($\text{STI}$) / USLE 3D LS factor (*Moore & Burch 1986*). |
-| | `compute_landslide_susceptibility_index` | Multi-criteria landslide and slope failure hazard score (*Montgomery & Dietrich 1994*). |
-| **🎨 RGB Orthomosaics** | `create_true_color_orthomosaic` | Rasterizes point cloud RGB color into 3-band RGB or 4-band RGBA GeoTIFFs with contrast enhancement. |
-| | `compute_visible_vegetation_index` | Computes **VARI**, **GLI**, **TGI**, **ExG**, and **NGRDI** crop and biomass health maps. |
-| **📐 Terrain Analysis** | `generate_hillshade` | Directional analytical 8-bit photometric Hillshades (Horn's algorithm). |
-| | `generate_slope_map` / `generate_aspect_map` | Topographic slope gradients (degrees/percent) and compass aspect headings (0°-360°). |
-| | `generate_contour_lines` | Smooth vector elevation contour lines exportable to Shapefile (.shp), GeoJSON, and GeoPackage. |
-| | `compute_cut_fill_volume` | 3D Cut & Fill earthwork volumes ($m^3$) and stockpile computations between survey epochs. |
-| **📈 Profiling & Maps** | `plot_elevation_transects` | Multi-transect 1D/2D cross-sectional topographic profile plots. |
-| | `map_grid_chips` | Overlays vector survey grid polygons on DEMs with centered chip ID annotations. |
-| **🛠️ Utilities** | `dronegeo.utils` | Bounding box arithmetic, GeoTIFF metadata inspector, custom color ramps, and timers. |
-| **⚡ Hardware Scaling** | `compute_context` | Dynamic CPU core budgeting (`n_jobs`) and memory streaming chunk management. |
+| **🔍 Diagnostics & QC** | `check_strip_alignment` | **Fix vertical flightline seams**: Auto-detects if pass #2 is 12cm higher than pass #1 and computes the exact correction ($\Delta Z$). |
+| | `detect_terrain_anomalies` | **Find sensor glitches**: Scans elevation models for false vertical spikes, bird strikes, or subterranean pits. |
+| | `profile_point_cloud` | **Pre-flight data audit**: Checks point density (e.g. $55 \text{ pts/m}^2$), vegetation penetration, and pulse returns. |
+| **⛰️ Surface Models** | `create_dtm` | **Bare-Earth Model**: Filters out trees, crops, and buildings to create a smooth, continuous terrain ground surface (no jagged facets). |
+| | `create_dsm` | **Full Surface Model**: Captures top-of-canopy, building rooftops, and powerlines from maximum LiDAR pulse returns. |
+| | `create_chm` | **Forest & Crop Height**: Subtracts DTM from DSM to measure true tree heights and crop canopy growth in meters. |
+| **🌊 Hydrology & Flood Risk** | `compute_d8_flow_direction` | **Water Flow Direction**: Simulates which direction rainwater will flow across every pixel on the landscape. |
+| | `compute_flow_accumulation` | **Stream Extraction**: Finds natural drainage valleys, gullies, and stream network headwaters. |
+| | `compute_topographic_wetness_index` | **Flood & Soil Saturation Risk**: Highlights low-lying depression zones prone to waterlogging and pooling. |
+| | `compute_stream_power_index` | **Channel Erosion Risk**: Identifies steep gullies and runoff channels subject to aggressive soil scouring. |
+| | `compute_sediment_transport_index` | **Soil Loss Model (USLE LS)**: Estimates hillslope sediment transport for agricultural conservation. |
+| | `compute_landslide_susceptibility_index` | **Slope Failure Risk**: Multi-criteria hazard score (0-100) combining steep slope, wetness, and curvature. |
+| **🎨 RGB Orthomosaics** | `create_true_color_orthomosaic` | **Photo-Realistic Maps**: Generates seamless 4-band RGBA true-color aerial maps from point cloud colors. |
+| | `compute_visible_vegetation_index` | **Crop & Biomass Health**: Computes VARI, GLI, and TGI greenness maps to monitor agricultural crop vitality. |
+| **📐 Terrain Analysis** | `generate_hillshade` | **3D Visual Relief**: Generates shaded relief maps for presentations, site plans, and GIS map layouts. |
+| | `generate_slope_map` / `generate_aspect_map` | **Slope & Compass Facing**: Calculates hillside gradient (degrees) and solar aspect heading (0°-360°). |
+| | `generate_contour_lines` | **CAD & GIS Vector Contours**: Generates smooth 0.5m, 1m, or 5m elevation contour lines (GeoJSON/Shapefile). |
+| | `compute_cut_fill_volume` | **3D Earthwork Volumes**: Measures excavated cut ($m^3$) and fill balance between two drone survey flights (e.g. monthly quarry audits). |
+| **📈 Profiling & Cross-Sections** | `plot_elevation_transects` | **Road & Terrain Profiles**: Plots cross-sectional elevation slices across the terrain for engineering QC. |
+| **⚡ Hardware Scaling** | `compute_context` | **Multi-Core Speed**: Dynamically scales CPU workers and memory chunks to process massive surveys efficiently. |
 
 ---
 
@@ -294,63 +291,6 @@ dg.set_compute_profile("maximum")  # Or "balanced", "low_memory"
 # Scoped Context Manager (Automatically restores prior settings on exit)
 with dg.compute_context(n_jobs=4, chunk_size=1_000_000, low_memory_mode=True):
     dtm = dg.dem.create_dtm("survey.las", "dtm.tif")
-```
-
----
-
-## 🏛️ Architecture & Project Structure
-
-```text
-dronegeo/
-├── .github/                 # CI/CD Workflows
-├── docs/
-│   └── images/
-│       └── dronegeo.png     # Official Logo
-├── examples/                # Runnable Workflow Examples & Notebooks
-│   ├── 00_generate_sample_datasets.py
-│   ├── 01_point_cloud_audit.py
-│   ├── 02_strip_alignment_and_merging.py
-│   ├── 03_surface_models_dtm_dsm_chm.py
-│   ├── 04_orthomosaic_and_vegetation_indices.py
-│   ├── 05_terrain_morphology_and_contours.py
-│   ├── 06_earthwork_cut_fill_volumetrics.py
-│   ├── 07_elevation_transects_and_qc.py
-│   ├── 08_hydrological_flow_and_risk_modeling.py
-│   ├── dronegeo_interactive_tutorial.ipynb
-│   └── README.md
-├── src/
-│   └── dronegeo/
-│       ├── core/            # Base classes (ABCs) & exception hierarchy
-│       ├── config/          # CPU worker engine & memory context managers
-│       ├── spatial/         # CRS resolution & PROJ environment bindings
-│       ├── diagnostics/     # Strip alignment (ΔZ) & terrain anomaly detectors
-│       ├── lidar/           # Point cloud profiling, merging & rectification
-│       ├── dem/             # Concave boundary masks & DTM/DSM/CHM interpolators
-│       ├── hydrology/       # D8, D-inf, TWI, SPI, STI & Landslide hazard models
-│       ├── imagery/         # RGBA Orthomosaics & VARI, GLI, TGI, ExG indices
-│       ├── analysis/        # Hillshade, Slope, Aspect, Contours & 3D Volumetrics
-│       ├── profiling/       # Elevation transects, QC dashboards & grid tiling
-│       ├── utils/           # Bounding box math, file validation & colormaps
-│       ├── py.typed         # PEP 561 type hinting marker
-│       └── __init__.py
-├── tests/                   # Comprehensive Automated Test Suite (46 tests)
-│   ├── conftest.py
-│   ├── test_core.py
-│   ├── test_config.py
-│   ├── test_spatial.py
-│   ├── test_utils.py
-│   ├── test_diagnostics.py
-│   ├── test_lidar.py
-│   ├── test_dem.py
-│   ├── test_hydrology.py
-│   ├── test_imagery.py
-│   ├── test_analysis.py
-│   ├── test_profiling.py
-│   └── test_end_to_end.py
-├── pyproject.toml           # Modern Python packaging configuration
-├── .gitignore
-├── .gitattributes
-└── README.md
 ```
 
 ---
