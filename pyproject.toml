@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "dronegeo"
 readme = { file = "README.md", content-type = "text/markdown" }
-version = "0.1.0"
+version = "0.1.2"
 description = "A high-performance Python library for drone remote sensing, UAV LiDAR point cloud processing, terrain anomaly diagnostics, and continuous DEM generation."
 license = "MIT"
 license-files = ["LICENSE"]
@@ -33,6 +33,7 @@ dependencies = [
     "rasterio>=1.3.0",
     "geopandas>=0.14.0",
     "shapely>=2.0.0",
+    "pyproj>=3.5.0",
     "matplotlib>=3.7.0",
     "psutil>=5.9.0",
 ]

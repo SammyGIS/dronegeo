@@ -38,7 +38,7 @@ try:
 except Exception:
     pass
 
-__version__ = "0.1.0"
+__version__ = "0.1.2"
 __author__ = "STROM Drone Remote Sensing Team"
 
 from . import core

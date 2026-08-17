@@ -11,14 +11,20 @@
 <p align="center">
   <a href="https://pypi.org/project/dronegeo/"><img src="https://img.shields.io/pypi/v/dronegeo?style=for-the-badge&logo=pypi&color=007ec6" alt="PyPI Version" /></a>
   <a href="https://python.org"><img src="https://img.shields.io/pypi/pyversions/dronegeo?style=for-the-badge&logo=python&color=3776AB" alt="Python Version" /></a>
-  <a href="https://sammygis.github.io/dronegeo/"><img src="https://img.shields.io/badge/Docs-MkDocs%20Material-blueviolet?style=for-the-badge&logo=materialformkdocs" alt="Documentation" /></a>
-  <a href="https://github.com/SammyGIS/dronegeo/actions"><img src="https://img.shields.io/badge/Tests-49%20Passed%20(100%25)-success?style=for-the-badge&logo=pytest" alt="Tests" /></a>
+  <a href="https://dronegeo.readthedocs.io"><img src="https://img.shields.io/badge/Docs-ReadTheDocs-blueviolet?style=for-the-badge&logo=readthedocs" alt="ReadTheDocs" /></a>
+  <a href="https://sammygis.github.io/dronegeo/"><img src="https://img.shields.io/badge/Docs-GitHub%20Pages-teal?style=for-the-badge&logo=materialformkdocs" alt="GitHub Pages" /></a>
+  <a href="https://github.com/SammyGIS/dronegeo/actions"><img src="https://img.shields.io/badge/Tests-49%20Passed%20(100%25)-brightgreen?style=for-the-badge&logo=pytest" alt="Tests" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" alt="License" /></a>
   <a href="#"><img src="https://img.shields.io/badge/Engine-Multi--Threaded%20k--NN-orange?style=for-the-badge" alt="Engine" /></a>
 </p>
 
 <p align="center">
-  <b>Inspect & AutoQC</b> • <b>Multi-Strip Alignment (ΔZ)</b> • <b>Continuous Smooth DTM/DSM</b> • <b>True-Color Orthos</b> • <b>Hydrology & Risk</b> • <b>3D Volumetrics</b> • <b>Crop Health Indices</b>
+  <img src="https://img.shields.io/badge/AutoQC-Diagnostic%20%26%20Healing-00c853?style=flat-square" alt="AutoQC" />
+  <img src="https://img.shields.io/badge/DTM%20%26%20DSM-Survey%20Grade%200.10m-2979ff?style=flat-square" alt="DTM" />
+  <img src="https://img.shields.io/badge/Hydrology-D8%20%7C%20D--Infinity%20%7C%20TWI-00b0ff?style=flat-square" alt="Hydrology" />
+  <img src="https://img.shields.io/badge/Orthomosaic-4--Band%20RGBA-aa00ff?style=flat-square" alt="Orthomosaic" />
+  <img src="https://img.shields.io/badge/Crop%20Health-VARI%20%7C%20GLI%20%7C%20TGI-00e676?style=flat-square" alt="Crop Health" />
+  <img src="https://img.shields.io/badge/Volumetrics-3D%20Cut%20%26%20Fill-ff9100?style=flat-square" alt="Volumetrics" />
 </p>
 
 ---
@@ -303,9 +309,10 @@ with dg.compute_context(n_jobs=4, chunk_size=1_000_000, low_memory_mode=True):
 
 ## Documentation and Live Preview
 
-`dronegeo` uses Material for MkDocs for its documentation website.
+`dronegeo` documentation is hosted on ReadTheDocs and GitHub Pages:
 
-- **Online Documentation**: [https://sammygis.github.io/dronegeo/](https://sammygis.github.io/dronegeo/)
+- **ReadTheDocs**: [https://dronegeo.readthedocs.io](https://dronegeo.readthedocs.io)
+- **GitHub Pages**: [https://sammygis.github.io/dronegeo/](https://sammygis.github.io/dronegeo/)
 
 To launch the documentation locally with instant hot-reloading:
 
@@ -313,14 +320,6 @@ To launch the documentation locally with instant hot-reloading:
 pip install -e ".[docs]"
 mkdocs serve
 ```
-
-To deploy the documentation to GitHub Pages with a single command:
-
-```bash
-mkdocs gh-deploy
-```
-
-*(Note: Automated GitHub Actions deployment is also active on every push to `main` via `.github/workflows/docs.yml`)*.
 
 ---
 

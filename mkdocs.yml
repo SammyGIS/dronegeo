@@ -83,4 +83,15 @@ nav:
   - RGB Orthos & Crop Vitality: imagery.md
   - 3D Volumetrics & Earthworks: volumetrics.md
   - Examples & Interactive Notebooks: examples.md
-  - Full API Reference & Docstrings: api.md
+  - Full API Reference & Docstrings:
+      - Overview: api/index.md
+      - AutoQC & Diagnostics: api/autoqc.md
+      - Surface Models (DEM): api/dem.md
+      - Hydrology & Flood Risk: api/hydrology.md
+      - Imagery & Orthomosaics: api/imagery.md
+      - Analysis & Volumetrics: api/analysis.md
+      - LiDAR & Strip Alignment: api/lidar.md
+      - Profiling & Visualizations: api/profiling.md
+      - Compute & Hardware Scaling: api/config.md
+      - Spatial & CRS Management: api/spatial.md
+      - Utilities & Helpers: api/utils.md
