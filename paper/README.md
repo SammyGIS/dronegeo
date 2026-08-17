@@ -12,6 +12,18 @@ This directory contains the complete publication package for submitting **DroneG
 | **[`paper.bib`](paper.bib)** | BibTeX bibliography containing DOIs and citations for all referenced scientific literature and foundational libraries. |
 | **[`figure1_pipeline.png`](figure1_pipeline.png)** | High-resolution publication schematic (300 DPI) visualizing DroneGeo's end-to-end processing pipeline. |
 | **[`generate_figures.py`](generate_figures.py)** | Standalone Python script to regenerate publication-quality figures. |
+| **[`reference_templates/`](reference_templates/)** | Collection of published JOSS templates and domain-specific reference papers to guide paper drafting. |
+
+---
+
+## 📚 JOSS Reference Templates & Examples
+
+Explore the [`reference_templates/`](reference_templates/) folder to inspect real-world examples:
+
+- **[`official_joss_template.md`](reference_templates/official_joss_template.md)**: Standard official JOSS skeleton with all frontmatter fields and review criteria sections.
+- **[`paper_authoring_guide.md`](reference_templates/paper_authoring_guide.md)**: Authoring cheat-sheet on Pandoc Citeproc citations, LaTeX math equations, figure formatting, and the 2026 Generative AI disclosure requirements.
+- **[`sample_pointcloud_lidar_paper.md`](reference_templates/sample_pointcloud_lidar_paper.md)**: Reference paper model for a LiDAR point cloud processing & quality assurance package.
+- **[`sample_hydrology_terrain_paper.md`](reference_templates/sample_hydrology_terrain_paper.md)**: Reference paper model for a raster hydrological routing and terrain risk modeling package.
 
 ---
 
