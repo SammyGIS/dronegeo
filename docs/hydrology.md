@@ -1,35 +1,39 @@
-# 🌊 Hydrology & Flood Risk Modeling
+# Hydrology & Flood Risk Modeling
 
-Terrain hydrology and environmental risk algorithms based on peer-reviewed scientific literature.
-
----
-
-## 🔬 Supported Algorithms & Literature References
-
-1. **D8 Flow Direction**: O'Callaghan & Mark (1984) - *Deterministic 8-neighbor steepest descent*.
-2. **D-Infinity Flow Direction**: Tarboton (1997) - *Continuous flow angle ($0 - 2\pi$ rad)*.
-3. **Flow Accumulation**: Jenson & Domingue (1988) - *Upslope contributing catchment drainage area*.
-4. **Topographic Wetness Index (TWI)**: Beven & Kirkby (1979) - *Soil saturation and flood pooling potential*.
-5. **Stream Power Index (SPI)**: Moore et al. (1991) - *Channel scouring and runoff erosion power*.
-6. **Sediment Transport Index (STI / USLE LS)**: Moore & Burch (1986) - *Hillslope soil loss risk*.
-7. **Landslide Susceptibility Hazard Model**: Montgomery & Dietrich (1994) - *Multi-criteria slope failure hazard score*.
+Simulate watershed drainage paths, stream channel formation, soil moisture saturation, and landslide susceptibility from high-resolution drone elevation models.
 
 ---
 
-## 💻 Python Example
+## The Hydrological Risk Indices Explained
+
+| Index | Formula | What It Means in Plain English | Primary Application |
+| :--- | :--- | :--- | :--- |
+| **D8 Flow Direction** | Steepest descent to 8 neighbors | Determines which adjacent pixel water flows to. | Watershed delineation & drainage paths |
+| **D-Infinity Flow ($D_\infty$)** | Continuous triangular facets ($0-2\pi$) | Allows water to disperse across two downward slope facets. | Diffuse runoff & soil erosion modeling |
+| **Flow Accumulation** | Cumulative upslope pixel count | Measures total drainage area feeding into each pixel. | Stream channel & valley extraction |
+| **Topographic Wetness Index (TWI)** | $\ln(a / \tan \beta)$ | High TWI indicates flat valley depressions where water ponds. | Flood risk & wetland mapping |
+| **Stream Power Index (SPI)** | $a \cdot \tan \beta$ | Measures erosive power of flowing surface runoff. | Culvert placement & gully erosion risk |
+| **Sediment Transport Index (STI)** | $(a / 22.13)^{0.6} \cdot (\sin \beta / 0.0896)^{1.3}$ | Evaluates hillslope soil carrying capacity (USLE LS 3D factor). | Agricultural soil conservation & silt fencing |
+| **Landslide Hazard Score** | Multi-criteria normalized [0-100] | Flags steep slopes with high wetness and convergent curvature. | Slope failure & landslide hazard zonation |
+
+---
+
+## Python Code Examples
 
 ```python
 import dronegeo as dg
 
-# D8 and D-Infinity Flow Directions
-dg.hydrology.compute_d8_flow_direction("dtm.tif", "flow_d8.tif")
-dg.hydrology.compute_dinfinity_flow_direction("dtm.tif", "flow_dinf.tif")
+# 1. Flow Directions (D8 and D-Infinity)
+dg.hydrology.compute_d8_flow_direction("dtm.tif", "flow_direction_d8.tif")
+dg.hydrology.compute_dinfinity_flow_direction("dtm.tif", "flow_direction_dinf.tif")
 
-# Flow Accumulation & Stream Network
-dg.hydrology.compute_flow_accumulation("dtm.tif", "accum.tif")
-dg.hydrology.extract_stream_network("accum.tif", "streams.tif", threshold_cells=200)
+# 2. Flow Accumulation & Stream Network
+accum = dg.hydrology.compute_flow_accumulation("dtm.tif", "accum.tif")
+streams = dg.hydrology.extract_stream_network(accum, "streams.tif", threshold_cells=200)
 
-# Topographic Wetness Index (TWI) & Landslide Hazard
-dg.hydrology.compute_topographic_wetness_index("dtm.tif", "twi.tif")
-dg.hydrology.compute_landslide_susceptibility_index("dtm.tif", "landslide_hazard.tif")
+# 3. Environmental Risk Indices (TWI, SPI, STI, Landslide)
+twi = dg.hydrology.compute_topographic_wetness_index("dtm.tif", "twi.tif")
+spi = dg.hydrology.compute_stream_power_index("dtm.tif", "spi.tif")
+sti = dg.hydrology.compute_sediment_transport_index("dtm.tif", "sti.tif")
+hazard = dg.hydrology.compute_landslide_susceptibility_index("dtm.tif", "landslide_hazard.tif")
 ```

@@ -1,0 +1,88 @@
+/* FastAPI / Swagger UI inspired styling for DroneGeo API dropdowns */
+
+details.swagger-function {
+  border: 1px solid rgba(73, 204, 144, 0.4);
+  background: rgba(73, 204, 144, 0.05);
+  border-radius: 8px;
+  margin-bottom: 1.2rem;
+  overflow: hidden;
+  transition: all 0.2s ease-in-out;
+}
+
+details.swagger-function[open] {
+  border-color: #49cc90;
+  box-shadow: 0 4px 14px rgba(73, 204, 144, 0.15);
+}
+
+details.swagger-function > summary {
+  background: rgba(73, 204, 144, 0.12);
+  padding: 0.75rem 1rem;
+  font-family: var(--md-code-font-family, monospace);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.swagger-badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-func {
+  background-color: #49cc90;
+  color: #000;
+}
+
+.badge-class {
+  background-color: #4990e2;
+  color: #fff;
+}
+
+.badge-context {
+  background-color: #9013fe;
+  color: #fff;
+}
+
+.param-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+}
+
+.param-table th {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+
+.param-table td {
+  padding: 0.6rem 0.8rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.param-name {
+  font-family: var(--md-code-font-family, monospace);
+  font-weight: 600;
+  color: #ff79c6;
+}
+
+.param-type {
+  font-family: var(--md-code-font-family, monospace);
+  color: #8be9fd;
+  font-size: 0.85rem;
+}
+
+.param-default {
+  font-family: var(--md-code-font-family, monospace);
+  color: #f1fa8c;
+  font-size: 0.85rem;
+}

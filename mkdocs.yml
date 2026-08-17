@@ -10,20 +10,20 @@ theme:
   logo: images/dronegeo.png
   favicon: images/dronegeo.png
   palette:
-    # Palette toggle for light mode
-    - scheme: default
-      primary: indigo
-      accent: deep purple
-      toggle:
-        icon: material/brightness-7
-        name: Switch to dark mode
-    # Palette toggle for dark mode
+    # 1. Dark mode (DEFAULT)
     - scheme: slate
       primary: indigo
       accent: deep purple
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
+    # 2. Light mode
+    - scheme: default
+      primary: indigo
+      accent: deep purple
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
   features:
     - navigation.instant
     - navigation.tracking
@@ -57,15 +57,30 @@ markdown_extensions:
   - attr_list
   - md_in_html
 
+extra_css:
+  - stylesheets/extra.css
+
 plugins:
   - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            show_source: true
+            show_root_heading: true
+            show_root_toc_entry: true
+            docstring_style: numpy
+            show_signature_annotations: true
+            separate_signature: true
 
 nav:
-  - 🏠 Home: index.md
-  - 🚀 Quickstart: quickstart.md
-  - 🔍 AutoQC & Diagnostics: autoqc.md
-  - ⛰️ Surface Models (DTM/DSM/CHM): surfaces.md
-  - 🌊 Hydrology & Flood Risk: hydrology.md
-  - 🎨 RGB Orthos & Crop Health: imagery.md
-  - 📐 Terrain Analysis & Volumetrics: volumetrics.md
-  - 📦 Examples Catalog: examples.md
+  - Home: index.md
+  - Beginner Quickstart: quickstart.md
+  - AutoQC & Quality Inspection: autoqc.md
+  - Surface Models (DTM, DSM, CHM): surfaces.md
+  - Hydrology & Flood Risk Modeling: hydrology.md
+  - RGB Orthos & Crop Vitality: imagery.md
+  - 3D Volumetrics & Earthworks: volumetrics.md
+  - Examples & Interactive Notebooks: examples.md
+  - Full API Reference & Docstrings: api.md

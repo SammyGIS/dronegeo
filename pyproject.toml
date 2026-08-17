@@ -63,7 +63,8 @@ dev = [
 
 [project.urls]
 Homepage = "https://github.com/SammyGIS/dronegeo"
-Documentation = "https://sammygis.github.io/dronegeo/"
+Documentation = "https://dronegeo.readthedocs.io"
+"GitHub Pages" = "https://sammygis.github.io/dronegeo/"
 Repository = "https://github.com/SammyGIS/dronegeo.git"
 Issues = "https://github.com/SammyGIS/dronegeo/issues"
 
