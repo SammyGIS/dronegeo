@@ -1,80 +1,83 @@
 <div align="center">
 
-<img src="docs/images/dronegeo.png" width="280" alt="dronegeo logo" />
+<img src="https://raw.githubusercontent.com/SammyGIS/dronegeo/main/docs/images/dronegeo.png" width="300" alt="dronegeo logo" />
 
-# `dronegeo` 🛸
+# dronegeo
 
 **High-Performance Python Remote Sensing, UAV LiDAR, Hydrological Flow & Photogrammetry Processing Toolkit**
 
-[![PyPI Version](https://img.shields.io/badge/pypi-v0.1.0-blue.svg?style=for-the-badge&logo=pypi)](https://pypi.org)
-[![Python Version](https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-brightgreen.svg?style=for-the-badge&logo=python)](https://python.org)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
-[![Tests](https://img.shields.io/badge/Tests-46%20Passed%20(100%25)-success.svg?style=for-the-badge)](#-running-tests)
-[![Survey Grade](https://img.shields.io/badge/Deliverables-Survey%20Grade%20(0.10m)-orange.svg?style=for-the-badge)](#)
-[![Hardware Accelerated](https://img.shields.io/badge/Engine-Multi--Threaded%20k--NN-purple.svg?style=for-the-badge)](#)
+[![PyPI Version](https://img.shields.io/pypi/v/dronegeo?style=for-the-badge&logo=pypi&color=007ec6)](https://pypi.org/project/dronegeo/)
+[![Python Version](https://img.shields.io/pypi/pyversions/dronegeo?style=for-the-badge&logo=python&color=3776AB)](https://python.org)
+[![Documentation](https://img.shields.io/badge/Docs-MkDocs%20Material-blueviolet?style=for-the-badge&logo=materialformkdocs)](https://sammygis.github.io/dronegeo/)
+[![Tests](https://img.shields.io/badge/Tests-49%20Passed%20(100%25)-success?style=for-the-badge&logo=pytest)](https://github.com/SammyGIS/dronegeo/actions)
+[![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
+[![Engine](https://img.shields.io/badge/Engine-Multi--Threaded%20k--NN-orange?style=for-the-badge)](#)
 
 <p align="center">
-  <b>Inspect Before Processing</b> • <b>Multi-Strip Alignment (ΔZ)</b> • <b>Continuous Smooth DTM/DSM</b> • <b>True-Color Orthos</b> • <b>Hydrology & Risk</b> • <b>3D Volumetrics</b> • <b>Vegetation Indices</b>
+  <b>Inspect & AutoQC</b> • <b>Multi-Strip Alignment (ΔZ)</b> • <b>Continuous Smooth DTM/DSM</b> • <b>True-Color Orthos</b> • <b>Hydrology & Risk</b> • <b>3D Volumetrics</b> • <b>Crop Health Indices</b>
 </p>
 
 </div>
 
 ---
 
-## 📖 Overview
+## Overview
 
-`dronegeo` is a modular, senior-architected Python library built for remote sensing scientists, drone survey teams, GIS engineers, and photogrammetry specialists. It bridges the gap between raw aerial sensor data (LAS/LAZ point clouds, multiband imagery) and survey-grade GIS deliverables (DTMs, DSMs, CHMs, Orthomosaics, Hillshades, Vector Contours, Hydrological Flow Risk Models, and 3D Earthwork Volumetrics).
+`dronegeo` is a modular, high-performance Python library built for remote sensing scientists, drone survey teams, GIS engineers, and photogrammetry specialists. It bridges the gap between raw aerial sensor data (LAS/LAZ point clouds, multiband imagery) and survey-grade GIS deliverables (DTMs, DSMs, CHMs, Orthomosaics, Hillshades, Vector Contours, Hydrological Flow Risk Models, and 3D Earthwork Volumetrics).
 
 ---
 
-## ✨ What You Can Do (Features & Real-World Examples)
+## Capabilities and Real-World Examples
 
-| Module | What It Does | Real-World Example |
+| Subsystem | Function | Real-World Application & Problem Solved |
 | :--- | :--- | :--- |
-| **🔍 Diagnostics & AutoQC** | `autoqc.inspect` | **Find & Explain Errors**: Automatically detects missing CRS, multipath noise floaters, or DEM hole voids with physical root-cause explanation. |
+| **Diagnostics & AutoQC** | `autoqc.inspect` | **Find & Explain Errors**: Automatically detects missing CRS, multipath noise floaters, or DEM hole voids with physical root-cause explanation. |
 | | `autoqc.remediate` | **Auto-Heal Survey Files**: 1-line automated repair pipeline that filters out noise floaters, assigns missing CRS, and infills terrain holes. |
 | | `check_strip_alignment` | **Fix vertical flightline seams**: Auto-detects if pass #2 is 12cm higher than pass #1 and computes the exact correction ($\Delta Z$). |
 | | `detect_terrain_anomalies` | **Find sensor glitches**: Scans elevation models for false vertical spikes, bird strikes, or subterranean pits. |
 | | `profile_point_cloud` | **Pre-flight data audit**: Checks point density (e.g. $55 \text{ pts/m}^2$), vegetation penetration, and pulse returns. |
-| **⛰️ Surface Models** | `create_dtm` | **Bare-Earth Model**: Filters out trees, crops, and buildings to create a smooth, continuous terrain ground surface (no jagged facets). |
+| **Surface Models** | `create_dtm` | **Bare-Earth Model**: Filters out trees, crops, and buildings to create a smooth, continuous terrain ground surface without facet stepping. |
 | | `create_dsm` | **Full Surface Model**: Captures top-of-canopy, building rooftops, and powerlines from maximum LiDAR pulse returns. |
 | | `create_chm` | **Forest & Crop Height**: Subtracts DTM from DSM to measure true tree heights and crop canopy growth in meters. |
-| **🌊 Hydrology & Flood Risk** | `compute_d8_flow_direction` | **Water Flow Direction**: Simulates which direction rainwater will flow across every pixel on the landscape. |
+| **Hydrology & Flood Risk** | `compute_d8_flow_direction` | **Water Flow Direction**: Simulates which direction rainwater will flow across every pixel on the landscape. |
 | | `compute_flow_accumulation` | **Stream Extraction**: Finds natural drainage valleys, gullies, and stream network headwaters. |
 | | `compute_topographic_wetness_index` | **Flood & Soil Saturation Risk**: Highlights low-lying depression zones prone to waterlogging and pooling. |
 | | `compute_stream_power_index` | **Channel Erosion Risk**: Identifies steep gullies and runoff channels subject to aggressive soil scouring. |
 | | `compute_sediment_transport_index` | **Soil Loss Model (USLE LS)**: Estimates hillslope sediment transport for agricultural conservation. |
 | | `compute_landslide_susceptibility_index` | **Slope Failure Risk**: Multi-criteria hazard score (0-100) combining steep slope, wetness, and curvature. |
-| **🎨 RGB Orthomosaics** | `create_true_color_orthomosaic` | **Photo-Realistic Maps**: Generates seamless 4-band RGBA true-color aerial maps from point cloud colors. |
+| **RGB Orthomosaics** | `create_true_color_orthomosaic` | **Photo-Realistic Maps**: Generates seamless 4-band RGBA true-color aerial maps from point cloud colors. |
 | | `compute_visible_vegetation_index` | **Crop & Biomass Health**: Computes VARI, GLI, and TGI greenness maps to monitor agricultural crop vitality. |
-| **📐 Terrain Analysis** | `generate_hillshade` | **3D Visual Relief**: Generates shaded relief maps for presentations, site plans, and GIS map layouts. |
+| **Terrain Analysis** | `generate_hillshade` | **3D Visual Relief**: Generates shaded relief maps for presentations, site plans, and GIS map layouts. |
 | | `generate_slope_map` / `generate_aspect_map` | **Slope & Compass Facing**: Calculates hillside gradient (degrees) and solar aspect heading (0°-360°). |
 | | `generate_contour_lines` | **CAD & GIS Vector Contours**: Generates smooth 0.5m, 1m, or 5m elevation contour lines (GeoJSON/Shapefile). |
 | | `compute_cut_fill_volume` | **3D Earthwork Volumes**: Measures excavated cut ($m^3$) and fill balance between two drone survey flights (e.g. monthly quarry audits). |
-| **📈 Profiling & Cross-Sections** | `plot_elevation_transects` | **Road & Terrain Profiles**: Plots cross-sectional elevation slices across the terrain for engineering QC. |
-| **⚡ Hardware Scaling** | `compute_context` | **Multi-Core Speed**: Dynamically scales CPU workers and memory chunks to process massive surveys efficiently. |
+| **Profiling & Cross-Sections** | `plot_elevation_transects` | **Road & Terrain Profiles**: Plots cross-sectional elevation slices across the terrain for engineering QC. |
+| **Hardware Scaling** | `compute_context` | **Multi-Core Speed**: Dynamically scales CPU workers and memory chunks to process massive surveys efficiently. |
 
 ---
 
-## 🚀 Installation
+## Installation
+
+Install via pip from PyPI:
 
 ```bash
-# Clone the repository
-git clone https://github.com/your-org/dronegeo.git
-cd dronegeo
+pip install dronegeo
+```
 
-# Install in development mode with test and CLI extras
-pip install -e ".[test,dev]"
+Or install with development, test, and documentation extras:
+
+```bash
+pip install "dronegeo[docs,test,dev]"
 ```
 
 ---
 
-## 🧪 Running Tests
+## Running Tests
 
 `dronegeo` includes a comprehensive automated test suite with synthetic point clouds and surface models:
 
 ```bash
-# Run all 46 test suites
+# Run all 49 test suites
 pytest -v
 
 # Run with test coverage
@@ -83,15 +86,15 @@ pytest --cov=dronegeo tests/
 
 ---
 
-## 💡 Quick Start Guides & Examples
+## Quick Start Guides and Workflows
 
 All examples are standalone and runnable out-of-the-box in the `examples/` directory:
 
 ```bash
-# Generate sample datasets once
+# 1. Generate canonical sample datasets once
 python examples/00_generate_sample_datasets.py
 
-# Run any example
+# 2. Run any workflow
 python examples/01_point_cloud_audit.py
 python examples/02_strip_alignment_and_merging.py
 python examples/03_surface_models_dtm_dsm_chm.py
@@ -100,34 +103,33 @@ python examples/05_terrain_morphology_and_contours.py
 python examples/06_earthwork_cut_fill_volumetrics.py
 python examples/07_elevation_transects_and_qc.py
 python examples/08_hydrological_flow_and_risk_modeling.py
+python examples/09_autoqc_survey_diagnostics_and_healing.py
 ```
 
 Or open the interactive Jupyter Notebook:
 ```bash
-jupyter notebook examples/dronegeo_interactive_tutorial.ipynb
+jupyter notebook examples/notebooks/dronegeo_interactive_tutorial.ipynb
 ```
 
 ---
 
-### 1. Pre-Processing Point Cloud Audit & Quality Dashboard
+### 1. AutoQC Survey Diagnostics and 1-Line Auto-Healing
 
 ```python
 import dronegeo as dg
 
-# Audit raw LAS point cloud
-report = dg.lidar.profile_point_cloud("examples/data/flight_survey_master.las")
+# 1. Inspect raw survey point cloud
+report = dg.autoqc.inspect_point_cloud("raw_flight.las", expected_crs=32632)
+report.print_summary()
 
-print(f"Total Points: {report.total_points:,}")
-print(f"Mean Density: {report.mean_point_density:.2f} pts/m²")
-print(f"Classifications: {report.classification_percentages}")
-
-# Generate multi-panel pre-flight QC dashboard
-dg.lidar.plot_point_cloud_profile(report, output_png="outputs/las_preflight_qc.png")
+# 2. Automatically heal survey defects (filters floaters & embeds CRS)
+if report.has_critical_issues:
+    clean_las = dg.autoqc.remediate_point_cloud("raw_flight.las", "cleaned_survey.las", report=report)
 ```
 
 ---
 
-### 2. Multi-Strip Flightline Alignment & Co-Registration ($\Delta Z$)
+### 2. Multi-Strip Flightline Alignment and Co-Registration ($\Delta Z$)
 
 ```python
 import dronegeo as dg
@@ -153,7 +155,7 @@ master_las = dg.lidar.align_and_merge_strips(
 
 ---
 
-### 3. Continuous DTM, DSM & Canopy Height Models (CHM)
+### 3. Continuous DTM, DSM, and Canopy Height Models (CHM)
 
 ```python
 import dronegeo as dg
@@ -185,16 +187,16 @@ chm_path = dg.dem.create_chm(
 
 ---
 
-### 4. Hydrological Flow Routing & Terrain Risk Modeling
+### 4. Hydrological Flow Routing and Terrain Risk Modeling
 
 ```python
 import dronegeo as dg
 
-# 1. D8 & D-Infinity Flow Routing
+# 1. D8 and D-Infinity Flow Routing
 dg.hydrology.compute_d8_flow_direction("outputs/survey_dtm.tif", "outputs/flow_d8.tif")
 dg.hydrology.compute_dinfinity_flow_direction("outputs/survey_dtm.tif", "outputs/flow_dinf.tif")
 
-# 2. Flow Accumulation & Drainage Network
+# 2. Flow Accumulation and Drainage Network
 dg.hydrology.compute_flow_accumulation("outputs/survey_dtm.tif", "outputs/flow_accum.tif", units="cells")
 dg.hydrology.extract_stream_network("outputs/flow_accum.tif", "outputs/stream_channels.tif", threshold_cells=200)
 
@@ -211,7 +213,7 @@ dg.hydrology.compute_landslide_susceptibility_index("outputs/survey_dtm.tif", "o
 
 ---
 
-### 5. True-Color RGB Orthomosaics & Photometric Vegetation Indices
+### 5. True-Color RGB Orthomosaics and Photometric Vegetation Indices
 
 ```python
 import dronegeo as dg
@@ -234,7 +236,7 @@ gli_tif = dg.imagery.compute_gli(ortho_path=ortho_path, output_tif="outputs/leaf
 
 ---
 
-### 6. Terrain Morphology: Hillshade, Slope, Aspect & Vector Contours
+### 6. Terrain Morphology: Hillshade, Slope, Aspect, and Vector Contours
 
 ```python
 import dronegeo as dg
@@ -259,7 +261,7 @@ print(f"Generated {len(contours_gdf):,} vector contour segments.")
 
 ---
 
-### 7. 3D Cut & Fill Volumetrics & Stockpile Calculations
+### 7. 3D Cut and Fill Volumetrics and Stockpile Calculations
 
 ```python
 import dronegeo as dg
@@ -282,7 +284,7 @@ print(f"Stockpile Volume: {stockpile.cut_volume_m3:,.2f} m³ across {stockpile.s
 
 ---
 
-### 8. Hardware Resource Management & Scoped Contexts
+### 8. Hardware Resource Management and Scoped Contexts
 
 ```python
 import dronegeo as dg
@@ -297,7 +299,30 @@ with dg.compute_context(n_jobs=4, chunk_size=1_000_000, low_memory_mode=True):
 
 ---
 
-## 🔬 Scientific Literature & References
+## Documentation and Live Preview
+
+`dronegeo` uses Material for MkDocs for its documentation website.
+
+- **Online Documentation**: [https://sammygis.github.io/dronegeo/](https://sammygis.github.io/dronegeo/)
+
+To launch the documentation locally with instant hot-reloading:
+
+```bash
+pip install -e ".[docs]"
+mkdocs serve
+```
+
+To deploy the documentation to GitHub Pages with a single command:
+
+```bash
+mkdocs gh-deploy
+```
+
+*(Note: Automated GitHub Actions deployment is also active on every push to `main` via `.github/workflows/docs.yml`)*.
+
+---
+
+## Scientific Literature and References
 
 1. **Topographic Wetness Index ($\text{TWI}$)**:
    - Beven, K. J., & Kirkby, M. J. (1979). *A physically based, variable contributing area model of basin hydrology*. Hydrological Sciences Bulletin, 24(1), 43-69.
@@ -314,6 +339,6 @@ with dg.compute_context(n_jobs=4, chunk_size=1_000_000, low_memory_mode=True):
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
