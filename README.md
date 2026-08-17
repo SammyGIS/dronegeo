@@ -12,7 +12,6 @@
   <a href="https://pypi.org/project/dronegeo/"><img src="https://img.shields.io/pypi/v/dronegeo?style=for-the-badge&logo=pypi&color=007ec6" alt="PyPI Version" /></a>
   <a href="https://python.org"><img src="https://img.shields.io/pypi/pyversions/dronegeo?style=for-the-badge&logo=python&color=3776AB" alt="Python Version" /></a>
   <a href="https://sammygis.github.io/dronegeo/"><img src="https://img.shields.io/badge/Live%20Docs-GitHub%20Pages-teal?style=for-the-badge&logo=materialformkdocs" alt="GitHub Pages" /></a>
-  <a href="https://dronegeo.readthedocs.io"><img src="https://img.shields.io/badge/Docs-ReadTheDocs-blueviolet?style=for-the-badge&logo=readthedocs" alt="ReadTheDocs" /></a>
   <a href="https://github.com/SammyGIS/dronegeo/actions"><img src="https://img.shields.io/badge/Tests-49%20Passed%20(100%25)-brightgreen?style=for-the-badge&logo=pytest" alt="Tests" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" alt="License" /></a>
   <a href="#"><img src="https://img.shields.io/badge/Engine-Multi--Threaded%20k--NN-orange?style=for-the-badge" alt="Engine" /></a>
@@ -328,10 +327,9 @@ with dg.compute_context(n_jobs=4, chunk_size=1_000_000, low_memory_mode=True):
 
 ## Documentation and Live Preview
 
-`dronegeo` documentation is hosted on GitHub Pages and ReadTheDocs:
+`dronegeo` official interactive documentation is hosted on GitHub Pages:
 
-- **GitHub Pages (Official)**: [https://sammygis.github.io/dronegeo/](https://sammygis.github.io/dronegeo/)
-- **ReadTheDocs**: [https://dronegeo.readthedocs.io](https://dronegeo.readthedocs.io)
+- **Official Documentation Portal**: [https://sammygis.github.io/dronegeo/](https://sammygis.github.io/dronegeo/)
 
 To launch the documentation locally with instant hot-reloading:
 
