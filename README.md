@@ -1,0 +1,377 @@
+<div align="center">
+
+<img src="docs/images/dronegeo.png" width="280" alt="dronegeo logo" />
+
+# `dronegeo` 🛸
+
+**High-Performance Python Remote Sensing, UAV LiDAR, Hydrological Flow & Photogrammetry Processing Toolkit**
+
+[![PyPI Version](https://img.shields.io/badge/pypi-v0.1.0-blue.svg?style=for-the-badge&logo=pypi)](https://pypi.org)
+[![Python Version](https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-brightgreen.svg?style=for-the-badge&logo=python)](https://python.org)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
+[![Tests](https://img.shields.io/badge/Tests-46%20Passed%20(100%25)-success.svg?style=for-the-badge)](#-running-tests)
+[![Survey Grade](https://img.shields.io/badge/Deliverables-Survey%20Grade%20(0.10m)-orange.svg?style=for-the-badge)](#)
+[![Hardware Accelerated](https://img.shields.io/badge/Engine-Multi--Threaded%20k--NN-purple.svg?style=for-the-badge)](#)
+
+<p align="center">
+  <b>Inspect Before Processing</b> • <b>Multi-Strip Alignment (ΔZ)</b> • <b>Continuous Smooth DTM/DSM</b> • <b>True-Color Orthos</b> • <b>Hydrology & Risk</b> • <b>3D Volumetrics</b> • <b>Vegetation Indices</b>
+</p>
+
+</div>
+
+---
+
+## 📖 Overview
+
+`dronegeo` is a modular, senior-architected Python library built for remote sensing scientists, drone survey teams, GIS engineers, and photogrammetry specialists. It bridges the gap between raw aerial sensor data (LAS/LAZ point clouds, multiband imagery) and survey-grade GIS deliverables (DTMs, DSMs, CHMs, Orthomosaics, Hillshades, Vector Contours, Hydrological Flow Risk Models, and 3D Earthwork Volumetrics).
+
+---
+
+## ✨ Features at a Glance
+
+| Category | Capability | Description |
+| :--- | :--- | :--- |
+| **🔍 Diagnostics & QC** | `check_strip_alignment` | Auto-detects median vertical datum offset ($\Delta Z$) across overlapping flight passes. |
+| | `detect_terrain_anomalies` | Identifies sensor spikes, sinkhole pits, and unnatural vertical cliff tears in DEMs. |
+| | `profile_point_cloud` | Audits raw LAS metadata, dimensions (RGB, Intensity), classifications, and pulse returns. |
+| **⛰️ Surface Models** | `create_dtm` | Generates continuous-gradient DTMs using multi-threaded $k$-NN IDW (zero crystal/facet steps). |
+| | `create_dsm` | Maximum surface return extraction with distance-transform void infilling and footprint clipping. |
+| | `create_chm` | Canopy Height Models ($\text{CHM} = \text{DSM} - \text{DTM}$) with customizable height clamps. |
+| **🌊 Hydrology & Risk** | `compute_d8_flow_direction` | Deterministic 8-neighbor steepest descent flow routing (*O'Callaghan & Mark 1984*). |
+| | `compute_dinfinity_flow_direction` | Continuous flow direction angle ($0 - 2\pi$ rad) (*Tarboton 1997*). |
+| | `compute_flow_accumulation` | Upslope contributing catchment area and stream channel extraction (*Jenson & Domingue 1988*). |
+| | `compute_topographic_wetness_index` | Topographic Wetness Index ($\text{TWI}$) / $\text{CTI}$ soil saturation model (*Beven & Kirkby 1979*). |
+| | `compute_stream_power_index` | Stream Power Index ($\text{SPI}$) channel scouring erosion potential (*Moore et al. 1991*). |
+| | `compute_sediment_transport_index` | Sediment Transport Index ($\text{STI}$) / USLE 3D LS factor (*Moore & Burch 1986*). |
+| | `compute_landslide_susceptibility_index` | Multi-criteria landslide and slope failure hazard score (*Montgomery & Dietrich 1994*). |
+| **🎨 RGB Orthomosaics** | `create_true_color_orthomosaic` | Rasterizes point cloud RGB color into 3-band RGB or 4-band RGBA GeoTIFFs with contrast enhancement. |
+| | `compute_visible_vegetation_index` | Computes **VARI**, **GLI**, **TGI**, **ExG**, and **NGRDI** crop and biomass health maps. |
+| **📐 Terrain Analysis** | `generate_hillshade` | Directional analytical 8-bit photometric Hillshades (Horn's algorithm). |
+| | `generate_slope_map` / `generate_aspect_map` | Topographic slope gradients (degrees/percent) and compass aspect headings (0°-360°). |
+| | `generate_contour_lines` | Smooth vector elevation contour lines exportable to Shapefile (.shp), GeoJSON, and GeoPackage. |
+| | `compute_cut_fill_volume` | 3D Cut & Fill earthwork volumes ($m^3$) and stockpile computations between survey epochs. |
+| **📈 Profiling & Maps** | `plot_elevation_transects` | Multi-transect 1D/2D cross-sectional topographic profile plots. |
+| | `map_grid_chips` | Overlays vector survey grid polygons on DEMs with centered chip ID annotations. |
+| **🛠️ Utilities** | `dronegeo.utils` | Bounding box arithmetic, GeoTIFF metadata inspector, custom color ramps, and timers. |
+| **⚡ Hardware Scaling** | `compute_context` | Dynamic CPU core budgeting (`n_jobs`) and memory streaming chunk management. |
+
+---
+
+## 🚀 Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/your-org/dronegeo.git
+cd dronegeo
+
+# Install in development mode with test and CLI extras
+pip install -e ".[test,dev]"
+```
+
+---
+
+## 🧪 Running Tests
+
+`dronegeo` includes a comprehensive automated test suite with synthetic point clouds and surface models:
+
+```bash
+# Run all 46 test suites
+pytest -v
+
+# Run with test coverage
+pytest --cov=dronegeo tests/
+```
+
+---
+
+## 💡 Quick Start Guides & Examples
+
+All examples are standalone and runnable out-of-the-box in the `examples/` directory:
+
+```bash
+# Generate sample datasets once
+python examples/00_generate_sample_datasets.py
+
+# Run any example
+python examples/01_point_cloud_audit.py
+python examples/02_strip_alignment_and_merging.py
+python examples/03_surface_models_dtm_dsm_chm.py
+python examples/04_orthomosaic_and_vegetation_indices.py
+python examples/05_terrain_morphology_and_contours.py
+python examples/06_earthwork_cut_fill_volumetrics.py
+python examples/07_elevation_transects_and_qc.py
+python examples/08_hydrological_flow_and_risk_modeling.py
+```
+
+Or open the interactive Jupyter Notebook:
+```bash
+jupyter notebook examples/dronegeo_interactive_tutorial.ipynb
+```
+
+---
+
+### 1. Pre-Processing Point Cloud Audit & Quality Dashboard
+
+```python
+import dronegeo as dg
+
+# Audit raw LAS point cloud
+report = dg.lidar.profile_point_cloud("examples/data/flight_survey_master.las")
+
+print(f"Total Points: {report.total_points:,}")
+print(f"Mean Density: {report.mean_point_density:.2f} pts/m²")
+print(f"Classifications: {report.classification_percentages}")
+
+# Generate multi-panel pre-flight QC dashboard
+dg.lidar.plot_point_cloud_profile(report, output_png="outputs/las_preflight_qc.png")
+```
+
+---
+
+### 2. Multi-Strip Flightline Alignment & Co-Registration ($\Delta Z$)
+
+```python
+import dronegeo as dg
+
+# 1. Detect overlap vertical offset
+overlap_report = dg.diagnostics.check_strip_alignment(
+    las_path1="flight_strip1.las",
+    las_path2="flight_strip2.las",
+    sample_resolution=0.5
+)
+print(f"Detected Datum Shift: {overlap_report.median_offset:+.4f} m (Std: {overlap_report.std_dev:.4f} m)")
+
+# 2. Plot statistical error histogram
+dg.profiling.plot_strip_overlap_residuals(overlap_report, "outputs/overlap_residuals.png")
+
+# 3. Merge strips with vertical shift applied
+master_las = dg.lidar.align_and_merge_strips(
+    las_files=["flight_strip1.las", "flight_strip2.las"],
+    output_las="outputs/unified_master.las",
+    z_shifts=[0.0, overlap_report.median_offset]
+)
+```
+
+---
+
+### 3. Continuous DTM, DSM & Canopy Height Models (CHM)
+
+```python
+import dronegeo as dg
+
+# Continuous Ground DTM (0.118m)
+dtm_path = dg.dem.create_dtm(
+    las_path="outputs/unified_master.las",
+    output_tif="outputs/survey_dtm.tif",
+    resolution=0.118,
+    k_neighbors=8,
+    ground_class=2
+)
+
+# Continuous DSM (0.118m)
+dsm_path = dg.dem.create_dsm(
+    las_path="outputs/unified_master.las",
+    output_tif="outputs/survey_dsm.tif",
+    resolution=0.118
+)
+
+# Canopy Height Model (CHM = DSM - DTM)
+chm_path = dg.dem.create_chm(
+    dsm_path=dsm_path,
+    dtm_path=dtm_path,
+    output_tif="outputs/canopy_height.tif",
+    clamp_min=0.0
+)
+```
+
+---
+
+### 4. Hydrological Flow Routing & Terrain Risk Modeling
+
+```python
+import dronegeo as dg
+
+# 1. D8 & D-Infinity Flow Routing
+dg.hydrology.compute_d8_flow_direction("outputs/survey_dtm.tif", "outputs/flow_d8.tif")
+dg.hydrology.compute_dinfinity_flow_direction("outputs/survey_dtm.tif", "outputs/flow_dinf.tif")
+
+# 2. Flow Accumulation & Drainage Network
+dg.hydrology.compute_flow_accumulation("outputs/survey_dtm.tif", "outputs/flow_accum.tif", units="cells")
+dg.hydrology.extract_stream_network("outputs/flow_accum.tif", "outputs/stream_channels.tif", threshold_cells=200)
+
+# 3. Topographic Wetness Index (TWI - Soil Saturation / Flood Risk)
+dg.hydrology.compute_topographic_wetness_index("outputs/survey_dtm.tif", "outputs/twi.tif")
+
+# 4. Stream Power Index (SPI - Channel Scouring Erosion) & Sediment Transport (STI)
+dg.hydrology.compute_stream_power_index("outputs/survey_dtm.tif", "outputs/spi.tif")
+dg.hydrology.compute_sediment_transport_index("outputs/survey_dtm.tif", "outputs/sti.tif")
+
+# 5. Multi-Criteria Landslide Hazard Susceptibility Score [0-100]
+dg.hydrology.compute_landslide_susceptibility_index("outputs/survey_dtm.tif", "outputs/landslide_hazard.tif")
+```
+
+---
+
+### 5. True-Color RGB Orthomosaics & Photometric Vegetation Indices
+
+```python
+import dronegeo as dg
+
+# 1. Generate 4-band RGBA True-Color Orthomosaic
+ortho_path = dg.imagery.create_true_color_orthomosaic(
+    las_path="outputs/unified_master.las",
+    output_tif="outputs/true_color_ortho.tif",
+    resolution=0.10,
+    alpha_channel=True,
+    auto_contrast=True
+)
+
+# 2. Compute Visible Atmospherically Resistant Index (VARI)
+vari_tif = dg.imagery.compute_vari(ortho_path=ortho_path, output_tif="outputs/crop_health_vari.tif")
+
+# 3. Compute Green Leaf Index (GLI)
+gli_tif = dg.imagery.compute_gli(ortho_path=ortho_path, output_tif="outputs/leaf_chlorophyll_gli.tif")
+```
+
+---
+
+### 6. Terrain Morphology: Hillshade, Slope, Aspect & Vector Contours
+
+```python
+import dronegeo as dg
+
+# 1. Analytical Photometric Hillshade (Azimuth 315° NW, Altitude 45°)
+dg.analysis.generate_hillshade("outputs/survey_dtm.tif", "outputs/hillshade.tif")
+
+# 2. Topographic Slope Map (in degrees)
+dg.analysis.generate_slope_map("outputs/survey_dtm.tif", "outputs/slope_degrees.tif", units="degrees")
+
+# 3. Compass Aspect Map (0° to 360°)
+dg.analysis.generate_aspect_map("outputs/survey_dtm.tif", "outputs/aspect_compass.tif")
+
+# 4. Generate 1.0m Vector Contour Lines (Shapefile / GeoJSON)
+contours_gdf = dg.analysis.generate_contour_lines(
+    dem_path="outputs/survey_dtm.tif",
+    output_vector_path="outputs/contours_1m.geojson",
+    interval_m=1.0
+)
+print(f"Generated {len(contours_gdf):,} vector contour segments.")
+```
+
+---
+
+### 7. 3D Cut & Fill Volumetrics & Stockpile Calculations
+
+```python
+import dronegeo as dg
+
+# 1. 3D Cut & Fill Volume between Two Survey Epochs
+vol_report = dg.analysis.compute_cut_fill_volume(
+    before_dem="quarry_january.tif",
+    after_dem="quarry_february.tif",
+    output_diff_tif="quarry_elevation_diff.tif"
+)
+
+print(f"Excavated Cut Volume: {vol_report.cut_volume_m3:,.1f} m³")
+print(f"Deposited Fill Volume: {vol_report.fill_volume_m3:,.1f} m³")
+print(f"Net Volume Change: {vol_report.net_volume_m3:,.1f} m³")
+
+# 2. Stockpile Volume against Reference Base Datum
+stockpile = dg.analysis.compute_stockpile_volume("stockpile_dtm.tif", base_elevation=540.0)
+print(f"Stockpile Volume: {stockpile.cut_volume_m3:,.2f} m³ across {stockpile.surface_area_m2:,.1f} m²")
+```
+
+---
+
+### 8. Hardware Resource Management & Scoped Contexts
+
+```python
+import dronegeo as dg
+
+# Global Preset
+dg.set_compute_profile("maximum")  # Or "balanced", "low_memory"
+
+# Scoped Context Manager (Automatically restores prior settings on exit)
+with dg.compute_context(n_jobs=4, chunk_size=1_000_000, low_memory_mode=True):
+    dtm = dg.dem.create_dtm("survey.las", "dtm.tif")
+```
+
+---
+
+## 🏛️ Architecture & Project Structure
+
+```text
+dronegeo/
+├── .github/                 # CI/CD Workflows
+├── docs/
+│   └── images/
+│       └── dronegeo.png     # Official Logo
+├── examples/                # Runnable Workflow Examples & Notebooks
+│   ├── 00_generate_sample_datasets.py
+│   ├── 01_point_cloud_audit.py
+│   ├── 02_strip_alignment_and_merging.py
+│   ├── 03_surface_models_dtm_dsm_chm.py
+│   ├── 04_orthomosaic_and_vegetation_indices.py
+│   ├── 05_terrain_morphology_and_contours.py
+│   ├── 06_earthwork_cut_fill_volumetrics.py
+│   ├── 07_elevation_transects_and_qc.py
+│   ├── 08_hydrological_flow_and_risk_modeling.py
+│   ├── dronegeo_interactive_tutorial.ipynb
+│   └── README.md
+├── src/
+│   └── dronegeo/
+│       ├── core/            # Base classes (ABCs) & exception hierarchy
+│       ├── config/          # CPU worker engine & memory context managers
+│       ├── spatial/         # CRS resolution & PROJ environment bindings
+│       ├── diagnostics/     # Strip alignment (ΔZ) & terrain anomaly detectors
+│       ├── lidar/           # Point cloud profiling, merging & rectification
+│       ├── dem/             # Concave boundary masks & DTM/DSM/CHM interpolators
+│       ├── hydrology/       # D8, D-inf, TWI, SPI, STI & Landslide hazard models
+│       ├── imagery/         # RGBA Orthomosaics & VARI, GLI, TGI, ExG indices
+│       ├── analysis/        # Hillshade, Slope, Aspect, Contours & 3D Volumetrics
+│       ├── profiling/       # Elevation transects, QC dashboards & grid tiling
+│       ├── utils/           # Bounding box math, file validation & colormaps
+│       ├── py.typed         # PEP 561 type hinting marker
+│       └── __init__.py
+├── tests/                   # Comprehensive Automated Test Suite (46 tests)
+│   ├── conftest.py
+│   ├── test_core.py
+│   ├── test_config.py
+│   ├── test_spatial.py
+│   ├── test_utils.py
+│   ├── test_diagnostics.py
+│   ├── test_lidar.py
+│   ├── test_dem.py
+│   ├── test_hydrology.py
+│   ├── test_imagery.py
+│   ├── test_analysis.py
+│   ├── test_profiling.py
+│   └── test_end_to_end.py
+├── pyproject.toml           # Modern Python packaging configuration
+├── .gitignore
+├── .gitattributes
+└── README.md
+```
+
+---
+
+## 🔬 Scientific Literature & References
+
+1. **Topographic Wetness Index ($\text{TWI}$)**:
+   - Beven, K. J., & Kirkby, M. J. (1979). *A physically based, variable contributing area model of basin hydrology*. Hydrological Sciences Bulletin, 24(1), 43-69.
+2. **D8 Drainage Flow Routing**:
+   - O'Callaghan, J. F., & Mark, D. M. (1984). *The extraction of drainage networks from digital elevation data*. Computer Vision, Graphics, and Image Processing, 28(3), 323-344.
+3. **D-Infinity Continuous Flow Algorithm**:
+   - Tarboton, D. G. (1997). *A new method for the determination of flow directions and upslope areas in grid digital elevation models*. Water Resources Research, 33(2), 309-319.
+4. **Stream Power Index ($\text{SPI}$)**:
+   - Moore, I. D., Grayson, R. B., & Ladson, A. R. (1991). *Digital terrain modelling: A review of hydrological, geomorphological, and biological applications*. Hydrological Processes, 5(1), 3-30.
+5. **Sediment Transport Index ($\text{STI}$ / USLE LS 3D Factor)**:
+   - Moore, I. D., & Burch, G. J. (1986). *Physical basis of the length-slope factor in the Universal Soil Loss Equation*. Soil Science Society of America Journal, 50(5), 1294-1298.
+6. **Topographic Landslide Susceptibility Hazard Model**:
+   - Montgomery, D. R., & Dietrich, W. E. (1994). *A physically based model for the topographic control on shallow landsliding*. Water Resources Research, 30(4), 1153-1171.
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
