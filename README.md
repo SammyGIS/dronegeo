@@ -31,7 +31,9 @@
 
 | Module | What It Does | Real-World Example |
 | :--- | :--- | :--- |
-| **🔍 Diagnostics & QC** | `check_strip_alignment` | **Fix vertical flightline seams**: Auto-detects if pass #2 is 12cm higher than pass #1 and computes the exact correction ($\Delta Z$). |
+| **🔍 Diagnostics & AutoQC** | `autoqc.inspect` | **Find & Explain Errors**: Automatically detects missing CRS, multipath noise floaters, or DEM hole voids with physical root-cause explanation. |
+| | `autoqc.remediate` | **Auto-Heal Survey Files**: 1-line automated repair pipeline that filters out noise floaters, assigns missing CRS, and infills terrain holes. |
+| | `check_strip_alignment` | **Fix vertical flightline seams**: Auto-detects if pass #2 is 12cm higher than pass #1 and computes the exact correction ($\Delta Z$). |
 | | `detect_terrain_anomalies` | **Find sensor glitches**: Scans elevation models for false vertical spikes, bird strikes, or subterranean pits. |
 | | `profile_point_cloud` | **Pre-flight data audit**: Checks point density (e.g. $55 \text{ pts/m}^2$), vegetation penetration, and pulse returns. |
 | **⛰️ Surface Models** | `create_dtm` | **Bare-Earth Model**: Filters out trees, crops, and buildings to create a smooth, continuous terrain ground surface (no jagged facets). |

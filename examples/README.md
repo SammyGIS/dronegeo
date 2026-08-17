@@ -30,15 +30,16 @@ All sample datasets will be stored in `examples/data/`. Downstream example scrip
 | **`06_earthwork_cut_fill_volumetrics.py`** | *3D Earthwork Volumetrics* | Differential 3D Cut & Fill earthwork volumes ($m^3$) between survey epochs and stockpile volume audits. | `quarry_elevation_difference.tif` |
 | **`07_elevation_transects_and_qc.py`** | *Transect Profiles & Chip Maps* | 1D/2D cross-sectional topographic profiles and survey vector tile grid chip indexing maps. | `elevation_transect_profiles.png`, `survey_grid_chips_map.png` |
 | **`08_hydrological_flow_and_risk_modeling.py`** | *Hydrology & Risk Modeling* | D8, $D_\\infty$, flow accumulation, TWI, Stream Power Index (SPI), Sediment Transport (STI), and landslide hazard index. | `flow_direction_d8.tif`, `topographic_wetness_index_twi.tif`, `landslide_susceptibility_hazard.tif` |
+| **`09_autoqc_survey_diagnostics_and_healing.py`** | *AutoQC Diagnostics & Healing* | Dynamic defect diagnosis (missing CRS, multipath noise, void holes) with root-cause analysis and 1-line auto-healing. | `remediated_clean_cloud.las`, `remediated_clean_dem.tif`, `autoqc_diagnostic_report.md` |
 
 ---
 
 ## 📓 Interactive Jupyter Tutorial
 
-Launch the end-to-end interactive notebook:
+Launch the end-to-end interactive notebook located in `examples/notebooks/`:
 
 ```bash
-jupyter notebook examples/dronegeo_interactive_tutorial.ipynb
+jupyter notebook examples/notebooks/dronegeo_interactive_tutorial.ipynb
 ```
 
 ---

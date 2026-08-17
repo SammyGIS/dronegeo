@@ -53,8 +53,10 @@ from . import hydrology
 from . import profiling
 from . import utils
 
-# Convenient alias
+# Convenient aliases
 risk = hydrology
+autoqc = diagnostics.autoqc
+qc = diagnostics.autoqc
 
 from .config.compute import (
     ComputeConfig,
