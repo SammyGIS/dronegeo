@@ -1,0 +1,27 @@
+# Auto-detect text files and perform LF normalization
+* text=auto eol=lf
+
+# Python source files
+*.py text diff=python eol=lf
+*.pyi text diff=python eol=lf
+*.toml text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.txt text eol=lf
+
+# Geospatial & Binary assets
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.tif binary
+*.tiff binary
+*.laz binary
+*.las binary
+*.shp binary
+*.shx binary
+*.dbf binary
+*.prj text eol=lf
+*.cpg text eol=lf
+*.gpkg binary
