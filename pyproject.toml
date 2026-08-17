@@ -11,7 +11,7 @@ license = "MIT"
 license-files = ["LICENSE"]
 requires-python = ">=3.9"
 authors = [
-    { name = "STROM Drone Remote Sensing Team", email = "dev@dronegeo.org" }
+    { name = "SammyGIS", email = "sammygis@users.noreply.github.com" }
 ]
 classifiers = [
     "Development Status :: 4 - Beta",

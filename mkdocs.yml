@@ -1,6 +1,6 @@
-site_name: dronegeo 🛸
+site_name: DroneGeo Documentation
 site_description: High-Performance Python Remote Sensing, UAV LiDAR, Hydrological Flow & Photogrammetry Processing Toolkit
-site_author: STROM Drone Remote Sensing Team
+site_author: SammyGIS / DroneGeo Contributors
 site_url: https://sammygis.github.io/dronegeo/
 repo_url: https://github.com/SammyGIS/dronegeo
 repo_name: SammyGIS/dronegeo
